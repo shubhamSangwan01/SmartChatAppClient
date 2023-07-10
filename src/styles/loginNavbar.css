@@ -1,0 +1,28 @@
+.loginNavbar__outer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-left: 3rem;
+    margin-right: 6rem;
+}
+
+.loginNavbar__list{
+    display: flex;
+    padding: 10px;
+    list-style: none;
+}
+
+.loginNavbar__list>li{
+    margin-left: 20px;
+    padding: 5px 15px;
+}
+
+.loginNavbar__list>.loginNavbar_button{
+    margin-left: 20px;
+    background-color: white;
+    border-radius: 25px;
+    font: #44A9F2;
+    
+    
+}

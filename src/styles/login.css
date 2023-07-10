@@ -1,0 +1,64 @@
+.login__outer{
+    min-height: 100%;
+    background:#F5F5F5;
+}
+
+section{
+    margin-left: 3rem;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.loginSection_image{
+    display: flex;
+    align-items: center;
+}
+
+.loginSection_text{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 100px;
+    justify-content: center;
+}
+
+.loginSection_textBackground1{
+    position: absolute;
+    background-image: radial-gradient(circle at center, #FBBC05, transparent);
+    filter: blur(20px);
+    opacity: 0.2;
+    width: 400px;
+    height: 400px;
+    transform: translate(0%,0%);
+}
+
+.loginSection_textBackground2{
+    position: absolute;
+    background-image: radial-gradient(circle at center, #44A9F2, transparent);
+    filter: blur(20px);
+    opacity: 0.3;
+    width: 400px;
+    height: 400px;
+    transform: translate(30%,20%);
+    
+}
+
+#root > div > div > section > div.loginSection_text > h1{
+    font-size: 3rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+#root > div > div > section > div.loginSection_text > h1:nth-child(4){
+    margin-bottom: 3rem;
+}
+
+#root > div > div > section > div.loginSection_text > p{
+    margin: 0;
+}
+
+#root > div > div > section > div.loginSection_image > img{
+    z-index: 1;
+}
