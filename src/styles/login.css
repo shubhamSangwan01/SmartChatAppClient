@@ -44,21 +44,10 @@ section{
     transform: translate(30%,20%);
     
 }
-
-#root > div > div > section > div.loginSection_text > h1{
+.loginSection_text h1{
     font-size: 3rem;
-    margin: 0;
-    font-weight: 600;
 }
 
-#root > div > div > section > div.loginSection_text > h1:nth-child(4){
-    margin-bottom: 3rem;
-}
-
-#root > div > div > section > div.loginSection_text > p{
-    margin: 0;
-}
-
-#root > div > div > section > div.loginSection_image > img{
+.loginSection_image > img{
     z-index: 1;
 }
