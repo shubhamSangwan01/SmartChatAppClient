@@ -8,12 +8,6 @@ function App() {
   return (
     
     <BrowserRouter>
-   
-      
-  
-    
-
-
     <Routes>
         <Route path="/chat" element={<ChatMain/>} />
         <Route path="/" element={ <Login/>} />
