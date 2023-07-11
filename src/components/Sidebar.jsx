@@ -6,8 +6,8 @@ const Sidebar = () => {
   return (
     <div className='chat__sidebar'>
             <div className='chat__sidebar__top'>
-            <span class="avatar material-symbols-outlined">
-             account_circle
+            <span class="avatar">
+             A
              </span>
              
               <span class="material-symbols-outlined">

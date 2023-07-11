@@ -1,3 +1,29 @@
 .rightchat__outer{
-    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-left: 2px solid #f5f5f5;
+    box-sizing: border-box;
+    padding: 0;
 }
+
+.rightchat__top{
+    display: flex;
+    padding: 5px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 39px 14px;
+    border-bottom: 2px solid #f5f5f5;
+    
+}
+.rightchat__top__text{
+    font-size: 1.3rem;
+    font-weight: 680;
+}
+
+.moreIcon{
+    padding: 5px;
+    background: #E3DFFD;
+    border-radius: 50%;
+}
+

@@ -23,8 +23,8 @@
 
 .chat__sidebar__top>span{
     margin-top: 19px;
-    padding: 15px;
-    font-size: 1.9rem;
+    padding: 8px 12px;
+    font-size: 2.3rem;
 }
 .chat__sidebar__bottom{
     margin-bottom: 30px;
@@ -36,8 +36,12 @@
 }
 .avatar{
     color: white;
-    font-weight: 310;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
    margin-bottom: 30px;
    border-radius: 14px;
     background-color: #615EF0;
+    
 }
