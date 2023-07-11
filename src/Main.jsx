@@ -3,7 +3,7 @@ import React from 'react'
 const Main = () => {
   return (
     <div className='App'>
-        Intro1
+        Intro2
     </div>
   )
 }
