@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/login.css";
-import LoginNavbar from "../components/LoginNavbar";
+import Navbar from "../components/Navbar";
 import Form from "../components/Form";
 
 
@@ -36,7 +36,7 @@ const Login = () => {
 
   return (
     <div className="login__outer">
-      <LoginNavbar handleFormTypeChange={handleFormTypeChange} />
+      <Navbar handleFormTypeChange={handleFormTypeChange} />
       <section>
         <div className="loginSection_text">
           <div className="loginSection_textBackground1"></div>

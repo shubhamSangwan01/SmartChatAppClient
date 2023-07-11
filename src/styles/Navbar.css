@@ -1,4 +1,4 @@
-.loginNavbar__outer{
+.Navbar__outer{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -7,18 +7,18 @@
     margin-right: 6rem;
 }
 
-.loginNavbar__list{
+.Navbar__list{
     display: flex;
     padding: 10px;
     list-style: none;
 }
 
-.loginNavbar__list>li{
+.Navbar__list>li{
     margin-left: 20px;
     padding: 5px 15px;
 }
 
-.loginNavbar__list>.loginNavbar_button{
+.Navbar__list>.Navbar_button{
     margin-left: 20px;
     background-color: white;
     border-radius: 25px;
