@@ -35,9 +35,10 @@ const Main = () => {
           <div className='Intro_features_card'>
             <div className='Intro_features_cardHeader'>
               <span class="material-symbols-outlined">videocam</span>
-              <h3>Feature1</h3>
+              <h3>Secure & private</h3>
             </div>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. A, hic!</p>
+            <p>This software is very easy for 
+you to manage you can use it as you wish.</p>
           </div>
           <div className='Intro_features_card'>
             <div className='Intro_features_cardHeader'>
