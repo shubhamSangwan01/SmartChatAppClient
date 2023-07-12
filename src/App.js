@@ -16,10 +16,10 @@ function App() {
 
 
     <Routes>
+        <Route path="/" element={ <Main/>} />
         <Route path="/chat" element={<ChatMain/>} />
-        <Route path="/" element={ <Login/>} />
-        <Route path="/intro" element={ <Main/>} />
-       
+        <Route path="/login" element={ <Login/>} />
+        
       </Routes>
     </BrowserRouter>
     

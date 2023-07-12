@@ -74,6 +74,39 @@ const Main = () => {
           </div>
         </div>
       </section>
+      <section className="Intro_uniqueFeatures">
+        <div className="Intro_uniqueFeatures_card">
+          <div className="Intro_uniqueFeatures_card_image">
+            <img src="/images/VideoCalling.png" alt="Videocalling" />
+          </div>
+          <div className="Intro_uniqueFeatures_card_text">
+            <span className="Intro_uniqueFeatures_card_text_header">Real time subtitiles for your video calls</span>
+            <span className="Intro_uniqueFeatures_card_text_details">Great software that allows you to chat from any place at any time without any interruption.</span>
+            <span className="Intro_uniqueFeatures_card_text_details">Great software that allows you to chat from any place at any time without any interruption.Great software that allows you to chat from any place at any time without any interruption.</span>
+          </div>
+        </div>
+        <div className="Intro_uniqueFeatures_card">
+          <div className="Intro_uniqueFeatures_card_text">
+            <span className="Intro_uniqueFeatures_card_text_header">Message & Text summary using Artificial Intelligence</span>
+            <span className="Intro_uniqueFeatures_card_text_details">Great software that allows you to chat from any place at any time without any interruption.</span>
+            <span className="Intro_uniqueFeatures_card_text_details">Great software that allows you to chat from any place at any time without any interruption.Great software that allows you to chat from any place at any time without any interruption.</span>
+          </div>
+          <div className="Intro_uniqueFeatures_card_image">
+            <img src="/images/UniqueFeature2.png" alt="UniqueFeature2" />
+          </div>
+        </div>
+        <div className="Intro_uniqueFeatures_card">
+          <div className="Intro_uniqueFeatures_card_image">
+            <img src="/images/UniqueFeature3.png" alt="UniqueFeature2" />
+          </div>
+          <div className="Intro_uniqueFeatures_card_text">
+            <span className="Intro_uniqueFeatures_card_text_header">AI reaction suggester</span>
+            <span className="Intro_uniqueFeatures_card_text_details">Great software that allows you to chat from any place at any time without any interruption.</span>
+            <span className="Intro_uniqueFeatures_card_text_details">Great software that allows you to chat from any place at any time without any interruption.Great software that allows you to chat from any place at any time without any interruption.</span>
+          </div>
+        </div>
+      </section>
+      <Navbar/>
     </div>
   );
 };
