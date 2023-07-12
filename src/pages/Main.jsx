@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Main.css";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Main = () => {
   return (
@@ -75,6 +76,7 @@ const Main = () => {
         </div>
       </section>
       <section className="Intro_uniqueFeatures">
+        <div>
         <div className="Intro_uniqueFeatures_card">
           <div className="Intro_uniqueFeatures_card_image">
             <img src="/images/VideoCalling.png" alt="Videocalling" />
@@ -105,8 +107,9 @@ const Main = () => {
             <span className="Intro_uniqueFeatures_card_text_details">Great software that allows you to chat from any place at any time without any interruption.Great software that allows you to chat from any place at any time without any interruption.</span>
           </div>
         </div>
+        </div>
       </section>
-      <Navbar/>
+      <Footer/>
     </div>
   );
 };

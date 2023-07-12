@@ -131,13 +131,12 @@
 }
 
 .Intro_uniqueFeatures_card{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: space-between;
 }
 
 .Intro_uniqueFeatures_card_image{
-    margin: 3rem 6rem;
-    /* display: flex; */
+    margin: 3rem 0 0 6rem;
     justify-content: center;
 }
 
