@@ -2,6 +2,9 @@ import React from "react";
 import "../styles/login.css";
 import Navbar from "../components/Navbar";
 import Form from "../components/Form";
+import { ToastContainer, toast } from 'react-toastify';
+const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 
 const Login = () => {
@@ -32,10 +35,18 @@ const Login = () => {
   };
   const handleLoginSubmit = (e) => {
     e.preventDefault();
+    console.log("Submit was clicked")
+    const v1 = USER_REGEX.test(loginFormData.email);
+    const v2 = PWD_REGEX.test(loginFormData.password);
+    if(!v1 || !v2){
+      console.log("Error Invalid entry")
+    }
+    toast("Wow so easy!");
   };
 
   return (
     <div className="login__outer">
+      <ToastContainer />
       <Navbar handleFormTypeChange={handleFormTypeChange} />
       <section>
         <div className="loginSection_text">
