@@ -28,6 +28,7 @@
     font-size: 0.9rem;
     border-radius: 5px;
     text-decoration: none;
+    margin: 25px 0;
 }
 
 .IntroMain_text_userStats{
@@ -50,15 +51,16 @@
 }
 
 .IntroMain_image_front{
-    position: absolute;
+    position: relative;
+    bottom: 50px;
     height: 500px;
     z-index: 10;
 }
 
 .IntroMain_image_back{
     position: absolute;
+    top: 110px;
     height: 500px;
-    
 }
 
 
@@ -75,18 +77,19 @@
 }
 
 .Intro_features_card{
-    height: 7rem;
+    height: 8rem;
     border-radius: 10px;
     margin: 5px;
     background-color: #fff;
-    box-shadow: 6px 6px 20px 0px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 15px 15px 20px -20px black;
+    margin: 10px 0 0 30px;
 }
 
 
 .Intro_features_cardHeader{
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    padding: 15px 0 0 15px;
 }
 
 .Intro_features_cardHeader h3{
@@ -95,16 +98,26 @@
 
 .Intro_features_cardHeader span{
     border-radius: 25px;
-    height: 30px;
-    background-color: wheat;
-    width: 30px;
+    height: 35px;
+    background-color: #E3DFFD;
+    width: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .Intro_features_card p{
-    margin: 0;
     margin-left: 10px;
     font-size: small;
+}
+
+.Intro_features_hearder span{
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.Intro_features_hearder{
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
 }
