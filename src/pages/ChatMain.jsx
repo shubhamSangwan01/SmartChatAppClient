@@ -5,13 +5,13 @@ import MiddleChat from '../components/MiddleChat'
 import RightChat from '../components/RightChat'
 import '../styles/chatmain.css'
 
-const ChatMain = () => {
+const ChatMain = ({socket}) => {
   return (
     <div className='chat__outer'>
         <Sidebar/>
         <div className='chat__main__grid'>
         <LeftChat/>
-        <MiddleChat/>
+        <MiddleChat socket={socket}  />
         <RightChat/>
         </div>
         

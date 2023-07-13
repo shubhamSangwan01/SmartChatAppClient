@@ -1,8 +1,31 @@
 import React from 'react'
+import { useEffect } from 'react'
 import '../styles/middleChat.css'
 
 
-const MiddleChat = () => {
+const MiddleChat = ({socket}) => {
+
+
+  const [received,setReceived] = React.useState('')
+  const [message,setMessage] = React.useState('');
+
+  const handleChangeMessage = (e)=>{
+    setMessage(e.target.value)
+  }
+  const handleSendMessage = async ()=>{
+    if(message!==''){
+      await socket.emit("send_message",message)
+    }
+    
+  }
+
+  useEffect(()=>{
+    socket.on("receive_message",data=>{
+      setReceived(data)
+    })
+  },[socket])
+ console.log(received)
+
   return (
     <div className='middlechat__outer'>
       <div className='middlechat__top'>
@@ -40,8 +63,8 @@ const MiddleChat = () => {
            attachment
         </span>
         <div className='middlechat__bottom__right'>
-          <input type='text' placeholder='Type a message'/>
-          <span class="material-symbols-outlined">
+          <input type='text' value={message} onChange={handleChangeMessage} placeholder='Type a message'/>
+          <span class="material-symbols-outlined" onClick={handleSendMessage}>
             send
           </span>
         </div>
