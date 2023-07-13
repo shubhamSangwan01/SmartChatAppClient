@@ -67,6 +67,9 @@
     height: 500px;
 }
 
+#IntroMain_text_h1, #IntroMain_text_p, #IntroMain_text_button, #IntroMain_text_userStats{
+    position: relative;
+}
 
 /* Features */
 
@@ -140,6 +143,7 @@
 }
 
 .Intro_uniqueFeatures_card_image{
+    position: relative;
     margin: 3rem 0 0 6rem;
     justify-content: center;
 }
@@ -149,6 +153,7 @@
 }
 
 .Intro_uniqueFeatures_card_text{
+    position: relative;
     margin: 3rem;
     display: flex;
     padding: 0 50px;
