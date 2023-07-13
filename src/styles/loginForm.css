@@ -127,15 +127,25 @@ input:focus {
     background-color: #44A9F2;
     color: white;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    transition-duration:0.3s;
+    transition-timing-function: ease-in-out;
 }
 
-#apple{
-    background-color: white;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+#loginForm__signIn>button:hover{
+    background-color:white;
+    color:#44A9F2;
+    font-weight: bold;
 }
-#google,#facebook{
+#google,#facebook,#apple{
     background-color: #F6F6F6;
 }
+#google:hover,#facebook:hover,#apple:hover{
+    background-color: white;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    transition-duration:0.3s;
+    transition-timing-function: ease-in-out;
+}
+
 .Icon{
     font-weight: 200;
     font-size: 16px;

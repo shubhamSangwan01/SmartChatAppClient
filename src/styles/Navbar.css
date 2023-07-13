@@ -16,13 +16,25 @@
 .Navbar__list>li{
     margin-left: 20px;
     padding: 5px 15px;
+    cursor:pointer;
+}
+.Navbar__list>li:hover{
+    font-weight:500;
 }
 
 .Navbar__list>.Navbar_button{
     margin-left: 20px;
+    color:#44A9F2;
+    font-weight:500;
     background-color: white;
     border-radius: 25px;
-    font: #44A9F2;
-    
-    
+    cursor:pointer;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.1s;
+}
+
+.Navbar__list>.Navbar_button:hover{
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    background-color: #44A9F2;
+    color:white;
 }
