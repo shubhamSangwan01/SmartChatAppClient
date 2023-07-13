@@ -4,27 +4,33 @@ import '../styles/middleChat.css'
 
 
 const MiddleChat = ({socket}) => {
-
-
-  const [received,setReceived] = React.useState('')
+  const sender = socket.id;
   const [message,setMessage] = React.useState('');
+  const [messageList,setMessageList] = React.useState([])
 
   const handleChangeMessage = (e)=>{
     setMessage(e.target.value)
   }
   const handleSendMessage = async ()=>{
     if(message!==''){
-      await socket.emit("send_message",message)
+      
+      await socket.emit("send_message",{message,id:socket.id})
+      setMessageList(list=>[...list,{message,id:socket.id}])
+      setMessage('')
     }
     
   }
-
+  useEffect(()=>{
+    socket.emit("join_room","123")
+  },[])
   useEffect(()=>{
     socket.on("receive_message",data=>{
-      setReceived(data)
+      setMessageList((list)=>[...list,data])
+     
     })
   },[socket])
- console.log(received)
+
+
 
   return (
     <div className='middlechat__outer'>
@@ -55,7 +61,9 @@ const MiddleChat = ({socket}) => {
       </div>
 
       <div className='middlechat__middle'>
-
+       {messageList.map(message=>(
+        <h1 className={message.id===sender?'middlechat__you':'middlechat__other'}>{message.message}</h1>
+       ))}
       </div>
       
       <div className='middlechat__bottom'>
@@ -63,8 +71,8 @@ const MiddleChat = ({socket}) => {
            attachment
         </span>
         <div className='middlechat__bottom__right'>
-          <input type='text' value={message} onChange={handleChangeMessage} placeholder='Type a message'/>
-          <span class="material-symbols-outlined" onClick={handleSendMessage}>
+          <input type='text' onKeyPress={(e)=>{e.key==="Enter" && handleSendMessage()}} value={message} onChange={handleChangeMessage} placeholder='Type a message'/>
+          <span class="material-symbols-outlined"  onClick={handleSendMessage}>
             send
           </span>
         </div>

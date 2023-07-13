@@ -103,3 +103,15 @@
     transform: rotate(-40deg);
     margin-right: 20px;
 }
+
+.middlechat__middle{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.middlechat__you{
+    color: yellow;
+}
+.middlechat__other{
+    color: green;
+}
