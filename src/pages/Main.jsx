@@ -25,16 +25,16 @@ const Main = () => {
     let value = window.scrollY;
     IntroMain_image_front.style.opacity = 1-value/500;
     IntroMain_image_back.style.opacity = 1-value/200;
-    Intro_features_card.style.transform = "scale(" + value/750 + ")";
-    Intro_features_card2.style.transform = "scale(" + value/750 + ")";
-    Intro_features_card3.style.transform = "scale(" + value/750 + ")";
+    Intro_features_card.style.transform = "scale(" + (0.7 + value/2500) + ")";
+    Intro_features_card2.style.transform = "scale(" + (0.7 + value/2500) + ")";
+    Intro_features_card3.style.transform = "scale(" + (0.7 + value/2500) + ")";
     Intro_uniqueFeatures_card_image.style.left = value * 0.25 -200 + "px";
     Intro_uniqueFeatures_card_image2.style.right = value * 0.25 -200 + "px";
     Intro_uniqueFeatures_card_image3.style.left = value * 0.25 -300 + "px";
-    IntroMain_text_h1.style.left = value * 0.25 -200 + "px";
-    IntroMain_text_p.style.right = value * 0.25 -200 + "px";
-    IntroMain_text_button.left = value * 0.25 -200 + "px";
-    IntroMain_text_userStats.right = value * 0.25 -200 + "px";
+    IntroMain_text_h1.style.right = value * 0.25 + "px";
+    IntroMain_text_p.style.right = value * 0.25 + "px";
+    IntroMain_text_button.left = value * 0.25 + "px";
+    IntroMain_text_userStats.width = 1- value * 0.25  + "%";
     })
   },[])
 
