@@ -30,6 +30,10 @@
     text-decoration: none;
     margin: 25px 0;
 }
+.IntroMain_text_button:hover{
+    transform: scale(1.1);
+    transition: transform 400ms;
+}
 
 .IntroMain_text_userStats{
     height: 5rem;

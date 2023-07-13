@@ -3,6 +3,17 @@ import "../styles/Main.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+function ready(){  
+  let IntroMain_image_front = document.getElementById('IntroMain_image_front');
+      
+  window.addEventListener('scroll',function(){
+  let value = window.scrollY;
+  IntroMain_image_front.style.left = value * 0.25 + 'px';
+  // text.style.marginTop = value * 0 + 'px';
+
+  })
+}
+
 const Main = () => {
   return (
     <div className="main_page">
@@ -27,6 +38,7 @@ const Main = () => {
         </div>
         <div className="IntroMain_image">
           <img
+            id="IntroMain_image_front"
             className="IntroMain_image_front"
             src="/images/IntroPic.png"
             alt=""

@@ -31,6 +31,11 @@
     
 }
 
+.Footer__right li:hover{
+    transform: scale(1.1) translateY(5px);
+    transition: transform 400ms;
+}
+
 .Footer__right img{
     height: 30px;
 }
