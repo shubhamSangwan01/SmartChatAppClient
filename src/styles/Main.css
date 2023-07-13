@@ -1,0 +1,171 @@
+*{
+    font-family: 'Inter';
+}
+
+
+.IntroMain{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Text div */
+.IntroMain_text{
+    margin-left: 3rem;
+}
+
+.IntroMain_text h1{
+    font-size: 2.5rem;
+}
+
+.IntroMain_text_button{
+    height: 2.5rem;
+    width: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2B59FF;
+    color: white;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 25px 0;
+}
+.IntroMain_text_button:hover{
+    transform: scale(1.1);
+    transition: transform 400ms;
+}
+
+.IntroMain_text_userStats{
+    height: 5rem;
+    width: 25rem;
+    background-color: #eaf0f7;
+    border-radius: 15px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Image div */
+.IntroMain_image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.IntroMain_image_front{
+    position: relative;
+    bottom: 50px;
+    height: 500px;
+    z-index: 10;
+}
+
+.IntroMain_image_back{
+    position: absolute;
+    top: 110px;
+    height: 500px;
+}
+
+#IntroMain_text_h1, #IntroMain_text_p, #IntroMain_text_button, #IntroMain_text_userStats{
+    position: relative;
+}
+
+/* Features */
+
+.Intro_features{
+    grid-template-columns: 1fr;
+    background-color: #FAFAFA;
+}
+
+.Intro_features_details{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.Intro_features_card{
+    height: 9rem;
+    border-radius: 10px;
+    margin: 5px;
+    background-color: #fff;
+    box-shadow: 15px 15px 20px -20px black;
+    margin: 10px 0 0 50px;
+}
+
+
+.Intro_features_cardHeader{
+    display: flex;
+    align-items: center;
+    padding: 15px 0 0 15px;
+}
+
+.Intro_features_cardHeader h3{
+    margin: 10px;
+}
+
+.Intro_features_cardHeader span{
+    border-radius: 25px;
+    height: 35px;
+    background-color: #E3DFFD;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Intro_features_card p{
+    margin-left: 10px;
+    font-size: small;
+}
+
+.Intro_features_hearder span{
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.Intro_features_hearder{
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Unique Features  */
+
+.Intro_uniqueFeatures{
+    display: flex;
+    flex-direction: column;
+}
+
+.Intro_uniqueFeatures_card{
+    display: flex;
+    justify-content: space-between;
+}
+
+.Intro_uniqueFeatures_card_image{
+    position: relative;
+    margin: 3rem 0 0 6rem;
+    justify-content: center;
+}
+
+.Intro_uniqueFeatures_card_image img{
+    height: 350px;
+}
+
+.Intro_uniqueFeatures_card_text{
+    position: relative;
+    margin: 3rem;
+    display: flex;
+    padding: 0 50px;
+    flex-direction: column;
+}
+
+.Intro_uniqueFeatures_card_text span{
+    width: 30rem;
+    padding: 20px 0;
+}
+
+.Intro_uniqueFeatures_card_text_header{
+    font-size: 2.5rem;
+    font-weight: 600;
+}
