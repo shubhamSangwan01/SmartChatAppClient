@@ -7,7 +7,7 @@ import '../styles/chatmain.css'
 
 const ChatMain = ({socket}) => {
   return (
-    <div className='chat__outer'>
+    <div className='chat__outer'> 
         <Sidebar/>
         <div className='chat__main__grid'>
         <LeftChat/>

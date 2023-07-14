@@ -5,6 +5,7 @@ import '../styles/middleChat.css'
 
 const MiddleChat = ({socket}) => {
   const sender = socket.id;
+  
   const [message,setMessage] = React.useState('');
   const [messageList,setMessageList] = React.useState([])
 
@@ -23,12 +24,14 @@ const MiddleChat = ({socket}) => {
   useEffect(()=>{
     socket.emit("join_room","123")
   },[])
+
   useEffect(()=>{
     socket.on("receive_message",data=>{
       setMessageList((list)=>[...list,data])
-     
+      console.log(data.id)
     })
   },[socket])
+   
 
 
 
@@ -61,8 +64,8 @@ const MiddleChat = ({socket}) => {
       </div>
 
       <div className='middlechat__middle'>
-       {messageList.map(message=>(
-        <h1 className={message.id===sender?'middlechat__you':'middlechat__other'}>{message.message}</h1>
+       {messageList.map((message,idx)=>(
+        <h1 key={idx} className={message.id===sender?'middlechat__you':'middlechat__other'}>{message.message}</h1>
        ))}
       </div>
       

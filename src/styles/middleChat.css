@@ -105,7 +105,8 @@
 }
 
 .middlechat__middle{
-    height: 100%;
+    height: 510px;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
 }
