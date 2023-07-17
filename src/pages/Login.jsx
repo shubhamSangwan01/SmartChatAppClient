@@ -2,7 +2,9 @@ import React from "react";
 import "../styles/login.css";
 import Navbar from "../components/Navbar";
 import Form from "../components/Form";
-
+import axios from'axios'
+import { toast} from 'react-toastify'
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formType, setFormType] = React.useState("login");
@@ -10,10 +12,13 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate()
 
   const handleFormTypeChange = (type) => {
     setFormType(type);
   };
+
+
 
   const [signupFormData, setSignupFormData] = React.useState({
     name: "",
@@ -27,12 +32,54 @@ const Login = () => {
     setLoginFormData((prev) => ({ ...prev, [name]: value }));
   };
   const handleSignupFormChange = (e) => {
-    const { name, value } = e.target;
-    setSignupFormData((prev) => ({ ...prev, [name]: value }));
+    
+    setSignupFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    
+    if( loginFormData.email!=="" &&  loginFormData.password!=="" ){
+      const data = await axios.post('http://localhost:5000/login',loginFormData)
+      if(data.data.status===200){
+        toast.success(data.data.message)
+        setLoginFormData({email:'',password:''})
+
+        sessionStorage.setItem("authToken",data.data.token);
+        sessionStorage.setItem("User",JSON.stringify(data.data.user));
+
+        setTimeout(()=>{navigate('/chat')},2000) 
+        console.log(data)
+      }else{
+        toast.error(data.data.message)
+      }
+      
+      
+    }
+    
   };
+
+  const handleSignupSubmit = async(e)=>{
+    e.preventDefault();
+    if(signupFormData.password !== signupFormData.confirmPassword){
+      toast.error("Passwords must be same!")
+      
+    }
+    else if(signupFormData.name !=="" && signupFormData.email!=="" &&  signupFormData.password!=="" && signupFormData.confirmPassword!==""){
+      const data = await axios.post('http://localhost:5000/signup',signupFormData)
+      if(data.data.status==200){
+        toast.success(data.data.message)
+        setSignupFormData({name:'',email:'',password:'',confirmPassword:''})
+        setFormType('login')
+        
+      }else{
+         toast.error(data.data.message)
+      }
+      
+    }
+
+    
+  }
+
 
   return (
     <div className="login__outer">
@@ -60,9 +107,11 @@ const Login = () => {
             handleLoginFormChange={handleLoginFormChange}
             handleSignupFormChange={handleSignupFormChange}
             handleLoginSubmit={handleLoginSubmit}
+            handleSignupSubmit={handleSignupSubmit}
           />
         </div>
       </section>
+     
     </div>
   );
 };

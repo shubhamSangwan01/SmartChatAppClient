@@ -7,7 +7,7 @@ const RightChat = () => {
     <div className='rightchat__outer'>
       <div className='rightchat__top'>
          <span className='rightchat__top__text'>Directory</span>
-         <span class="moreIcon material-symbols-outlined">more_vert</span>
+         <span className="moreIcon material-symbols-outlined">more_vert</span>
       </div>
       <div className='rightchat__middle'>
 

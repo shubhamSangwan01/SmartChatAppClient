@@ -8,8 +8,10 @@ const Form = ({
   signupFormData,
   handleSignupFormChange,
   handleLoginSubmit,
+  handleSignupSubmit
 }) => {
-  console.log(loginFormData);
+ 
+
   return (
     <div className="loginForm__outer">
       {formType == "login" && (
@@ -34,7 +36,7 @@ const Form = ({
                 placeholder="Enter Password"
               />
               <span
-                class="Icon material-symbols-outlined"
+                className="Icon material-symbols-outlined"
                 style={{ color: "#3B0DF4" }}
               >
                 visibility_off
@@ -68,7 +70,7 @@ const Form = ({
         </form>
       )}
       {formType == "register" && (
-        <form className="loginForm" onSubmit={handleLoginSubmit}>
+        <form className="loginForm" onSubmit={handleSignupSubmit}>
           <ul className="loginForm__list">
             <li className="loginForm__input">
               <input
@@ -99,8 +101,9 @@ const Form = ({
                 placeholder="Enter Password"
               />
               <span
-                class="Icon material-symbols-outlined"
+                className="Icon material-symbols-outlined"
                 style={{ color: "#3B0DF4" }}
+                
               >
                 visibility_off
               </span>
@@ -114,7 +117,7 @@ const Form = ({
                 placeholder="Confirm Password"
               />
               <span
-                class="Icon material-symbols-outlined"
+                className="Icon material-symbols-outlined"
                 style={{ color: "#3B0DF4" }}
               >
                 visibility_off
@@ -124,7 +127,7 @@ const Form = ({
               <span>Reset Password ?</span>
             </li>
             <li id="loginForm__signIn">
-              <button type="submit">Sign In</button>
+              <button type="submit">Sign Up</button>
             </li>
             <li id="loginForm__line__li">
               <div className="loginForm__line"></div>

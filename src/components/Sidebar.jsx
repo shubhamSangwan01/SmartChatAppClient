@@ -2,28 +2,32 @@ import React from 'react'
 import '../styles/Sidebar.css'
 
 
-const Sidebar = () => {
+const Sidebar = ({user,activeMenu,setActiveMenu}) => {
   return (
     <div className='chat__sidebar'>
             <div className='chat__sidebar__top'>
-            <span class="avatar">
-             A
+            <span className="avatar">
+             {user?.name[0].toUpperCase()}
              </span>
              
-              <span class="material-symbols-outlined">
-                home
-              </span>
+             
             
-               <span class="material-symbols-outlined">
+               <span className={activeMenu==='messages'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('messages')}} >
                forum
                </span>
-            
-               <span class="material-symbols-outlined">
-               search
+
+               <span className={activeMenu==='addFriends'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('addFriends')}}>
+               person_add
+               </span>
+               <span className={activeMenu==='createGroup'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('createGroup')}}>
+               group_add
+               </span>
+               <span className={activeMenu==='notifications'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('notifications')}}>
+               notifications
                </span>
                </div>
             <div className='chat__sidebar__bottom'>
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
             settings
             </span>
             </div>

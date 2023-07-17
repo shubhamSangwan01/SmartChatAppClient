@@ -55,6 +55,9 @@
     border-radius: 10px;
     
 }
+.leftchat__chat{
+    cursor: pointer;
+}
 .leftchat__searchbar>input{
     height: 49px;
     width: 240px;
@@ -124,6 +127,7 @@
     background-color:rgba(254, 235, 200, 1);
     padding: 2px 7px;
     margin-right: 8px;
+    cursor: pointer;
 }
 
 .leftchat__chatcard__right__row1__time{

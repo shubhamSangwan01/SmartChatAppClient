@@ -25,6 +25,13 @@
     margin-top: 19px;
     padding: 8px 12px;
     font-size: 2.3rem;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.chat__sidebar__top>span:hover{
+    background-color: aqua;
+    font-weight: bold;
 }
 .chat__sidebar__bottom{
     margin-bottom: 30px;
@@ -32,7 +39,14 @@
 .chat__sidebar__bottom>span{
     padding: 9px;
     font-size: 1.9rem;
+    cursor: pointer;
+    border-radius: 8px;
     
+}
+.active{
+    background-color: #E3DFFD;
+    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .avatar{
     color: white;
