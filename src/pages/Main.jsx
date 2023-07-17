@@ -7,6 +7,10 @@ import Footer from "../components/Footer";
 
 const Main = () => {
   useEffect(()=>{
+    let IntroMain_text_h1 = document.getElementById('IntroMain_text_h1');
+    let IntroMain_text_p = document.getElementById('IntroMain_text_p');
+    let IntroMain_text_button = document.getElementById('IntroMain_text_button');
+    let IntroMain_text_userStats = document.getElementById('IntroMain_text_userStats');
     let IntroMain_image_front = document.getElementById('IntroMain_image_front');
     let IntroMain_image_back = document.getElementById('IntroMain_image_back');
     let Intro_features_card = document.getElementById('Intro_features_card');
@@ -15,14 +19,15 @@ const Main = () => {
     let Intro_uniqueFeatures_card_image = document.getElementById('Intro_uniqueFeatures_card_image');
     let Intro_uniqueFeatures_card_image2 = document.getElementById('Intro_uniqueFeatures_card_image2');
     let Intro_uniqueFeatures_card_image3 = document.getElementById('Intro_uniqueFeatures_card_image3');
-    let IntroMain_text_h1 = document.getElementById('IntroMain_text_h1');
-    let IntroMain_text_p = document.getElementById('IntroMain_text_p');
-    let IntroMain_text_button = document.getElementById('IntroMain_text_button');
-    let IntroMain_text_userStats = document.getElementById('IntroMain_text_userStats');
-
+    
 
     window.addEventListener('scroll',function(){
     let value = window.scrollY;
+
+    IntroMain_text_h1.style.right = value * 0.25 + "px";
+    IntroMain_text_p.style.right = value * 0.25 + "px";
+    IntroMain_text_button.left = value * 0.25 + "px";
+    IntroMain_text_userStats.width = 1- value * 0.25  + "%";
     IntroMain_image_front.style.opacity = 1-value/500;
     IntroMain_image_back.style.opacity = 1-value/200;
     Intro_features_card.style.transform = "scale(" + (0.7 + value/2500) + ")";
@@ -31,17 +36,14 @@ const Main = () => {
     Intro_uniqueFeatures_card_image.style.left = value * 0.25 -200 + "px";
     Intro_uniqueFeatures_card_image2.style.right = value * 0.25 -200 + "px";
     Intro_uniqueFeatures_card_image3.style.left = value * 0.25 -300 + "px";
-    IntroMain_text_h1.style.right = value * 0.25 + "px";
-    IntroMain_text_p.style.right = value * 0.25 + "px";
-    IntroMain_text_button.left = value * 0.25 + "px";
-    IntroMain_text_userStats.width = 1- value * 0.25  + "%";
+    
     })
   },[])
 
   return (
     <div className="main_page">
       <Navbar />
-      <section className="IntroMain">
+      <section className="IntroMain" id="IntroMain">
         <div className="IntroMain_text">
           <h1 id="IntroMain_text_h1">
             Start chatting with <br />
@@ -74,7 +76,7 @@ const Main = () => {
           />
         </div>
       </section>
-      <section className="Intro_features">
+      <section className="Intro_features" id="Intro_features">
         <div className="Intro_features_hearder">
           <span>Feature for better experience</span>
         </div>
@@ -111,7 +113,7 @@ const Main = () => {
           </div>
         </div>
       </section>
-      <section className="Intro_uniqueFeatures">
+      <section className="Intro_uniqueFeatures" id="Intro_uniqueFeatures">
         <div>
         <div className="Intro_uniqueFeatures_card">
           <div id="Intro_uniqueFeatures_card_image" className="Intro_uniqueFeatures_card_image">

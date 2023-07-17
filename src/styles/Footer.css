@@ -1,14 +1,14 @@
 .Footer__outer{
     
     color: #ffffff;
-    background-color: #56ccf2;
+    background-image: linear-gradient( transparent,#00c1ff, #00c1ff);
 }
 
 .Footer__top{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px 0 20px;
+    padding: 40px 20px 0 20px;
 }
 
 
@@ -18,8 +18,26 @@
     padding-left: 15px;
 }
 
-.Footer__list>li{
+.Footer__list>li,.Footer__list>a{
     padding: 5px 15px;
+    cursor: pointer;
+}
+
+.Footer__left li,.Footer__left a{
+    margin-left: 20px;
+    font-weight:500;
+    border-radius: 25px;
+    cursor:pointer;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.1s;
+    text-decoration: none;
+    color: white;
+}
+
+.Footer__left li:hover,.Footer__left a:hover{
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    background-color: white;
+    color:#44A9F2;
 }
 
 .Footer__left .Footer__list>.Footer_button{
@@ -31,7 +49,7 @@
     
 }
 
-.Footer__right li:hover{
+.Footer__right li:hover,.Footer__right a:hover{
     transform: scale(1.1) translateY(5px);
     transition: transform 400ms;
 }

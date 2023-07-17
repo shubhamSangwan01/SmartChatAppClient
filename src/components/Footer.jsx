@@ -3,15 +3,14 @@ import '../styles/Footer.css'
 
 const Footer = () => {
   return (
-    <div className='Footer__outer'>
+    <div className='Footer__outer' id='Footer__outer'>
         <div className='Footer__top'>
             <div className='Footer__left'>
                 <ul className='Footer__list'>
-                    <li>Home</li>
-                    <li>About</li>
-                    <li>Blog</li>
-                    <li>Pages</li>
-                    <li>Contact</li>
+                <a href="#IntroMain">Home</a>
+                <a href="#Intro_features">Features</a>
+                <a href="">About Us</a>
+                <a href="#Footer__outer">Contact</a>
                 </ul>
             </div>
             <div className='Footer__right'>
