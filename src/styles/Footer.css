@@ -21,6 +21,9 @@
 .Footer__list>li,.Footer__list>a{
     padding: 5px 15px;
     cursor: pointer;
+    height: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .Footer__left li,.Footer__left a{

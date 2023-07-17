@@ -19,11 +19,13 @@ const Main = () => {
     let Intro_uniqueFeatures_card_image = document.getElementById('Intro_uniqueFeatures_card_image');
     let Intro_uniqueFeatures_card_image2 = document.getElementById('Intro_uniqueFeatures_card_image2');
     let Intro_uniqueFeatures_card_image3 = document.getElementById('Intro_uniqueFeatures_card_image3');
+    // let Navbar__outer = document.getElementById('Navbar__outer');
     
 
     window.addEventListener('scroll',function(){
     let value = window.scrollY;
-
+    
+    // Navbar__outer.style.left = value * 0.25 -300 + "px";
     IntroMain_text_h1.style.right = value * 0.25 + "px";
     IntroMain_text_p.style.right = value * 0.25 + "px";
     IntroMain_text_button.left = value * 0.25 + "px";
