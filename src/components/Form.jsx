@@ -1,4 +1,5 @@
 import React from "react";
+import 'react-toastify/dist/ReactToastify.css';
 import "../styles/loginForm.css";
 
 const Form = ({
@@ -15,7 +16,9 @@ const Form = ({
   return (
     <div className="loginForm__outer">
       {formType == "login" && (
-        <form className="loginForm" onSubmit={handleLoginSubmit}>
+        <form className="loginForm" 
+        // onSubmit={handleLoginSubmit}
+        >
           <ul className="loginForm__list">
             <li className="loginForm__input">
               <input
@@ -46,7 +49,7 @@ const Form = ({
               <span>Reset Password ?</span>
             </li>
             <li id="loginForm__signIn">
-              <button type="submit">Sign In</button>
+              <button>Sign In</button>
             </li>
             <li id="loginForm__line__li">
               <div className="loginForm__line"></div>
@@ -56,13 +59,13 @@ const Form = ({
             <li id="loginForm__buttons">
               <ul className="loginForm__buttons__list">
                 <li id="google">
-                  <img src="/images/google.png" alt="Google" />
+                  <img src="/images/google.png" alt="Google" onClick={console.log("google")}/>
                 </li>
                 <li id="apple">
-                  <img src="/images/apple.png" alt="Google" />
+                  <img src="/images/apple.png" alt="Google" onClick={console.log("google")}/>
                 </li>
                 <li id="facebook">
-                  <img src="/images/facebook.png" alt="Google" />
+                  <img src="/images/facebook.png" alt="Google" onClick={console.log("google")}/>
                 </li>
               </ul>
             </li>
@@ -127,7 +130,9 @@ const Form = ({
               <span>Reset Password ?</span>
             </li>
             <li id="loginForm__signIn">
+
               <button type="submit">Sign Up</button>
+
             </li>
             <li id="loginForm__line__li">
               <div className="loginForm__line"></div>

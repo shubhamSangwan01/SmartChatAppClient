@@ -3,9 +3,8 @@ import './App.css';
 import ChatMain from './pages/ChatMain';
 import Login from './pages/Login';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {ToastContainer} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
 
+import Main from './pages/Main';
 
 
 function App() {
@@ -28,9 +27,12 @@ function App() {
       </div>
     <BrowserRouter>
     <Routes>
-        <Route path="/chat" element={<ChatMain />} />
-        <Route path="/" element={ <Login/>} />
-       
+
+        <Route path="/" element={ <Main/>} />
+        <Route path="/chat" element={<ChatMain/>} />
+        <Route path="/login" element={ <Login/>} />
+        
+
       </Routes>
     </BrowserRouter>
     </>
