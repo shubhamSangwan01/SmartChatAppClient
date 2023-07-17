@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import "../styles/login.css";
 import Navbar from "../components/Navbar";
 import Form from "../components/Form";
-import { ToastContainer, toast } from 'react-toastify';
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
+import axios from'axios'
+import { toast} from 'react-toastify'
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
@@ -13,10 +14,13 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate()
 
   const handleFormTypeChange = (type) => {
     setFormType(type);
   };
+
+
 
   const [signupFormData, setSignupFormData] = React.useState({
     name: "",
@@ -30,19 +34,56 @@ const Login = () => {
     setLoginFormData((prev) => ({ ...prev, [name]: value }));
   };
   const handleSignupFormChange = (e) => {
-    const { name, value } = e.target;
-    setSignupFormData((prev) => ({ ...prev, [name]: value }));
+    
+    setSignupFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submit was clicked")
-    const v1 = USER_REGEX.test(loginFormData.email);
-    const v2 = PWD_REGEX.test(loginFormData.password);
-    if(!v1 || !v2){
-      console.log("Error Invalid entry")
+
+    
+    if( loginFormData.email!=="" &&  loginFormData.password!=="" ){
+      const data = await axios.post('http://localhost:5000/login',loginFormData)
+      if(data.data.status===200){
+        toast.success(data.data.message)
+        setLoginFormData({email:'',password:''})
+
+        sessionStorage.setItem("authToken",data.data.token);
+        sessionStorage.setItem("User",JSON.stringify(data.data.user));
+
+        setTimeout(()=>{navigate('/chat')},2000) 
+        console.log(data)
+      }else{
+        toast.error(data.data.message)
+      }
+      
+      
     }
-    toast("Wow so easy!");
+    
+
   };
+
+  const handleSignupSubmit = async(e)=>{
+    e.preventDefault();
+    if(signupFormData.password !== signupFormData.confirmPassword){
+      toast.error("Passwords must be same!")
+      
+    }
+    else if(signupFormData.name !=="" && signupFormData.email!=="" &&  signupFormData.password!=="" && signupFormData.confirmPassword!==""){
+      const data = await axios.post('http://localhost:5000/signup',signupFormData)
+      if(data.data.status==200){
+        toast.success(data.data.message)
+        setSignupFormData({name:'',email:'',password:'',confirmPassword:''})
+        setFormType('login')
+        
+      }else{
+         toast.error(data.data.message)
+      }
+      
+    }
+
+    
+  }
+
 
   return (
     <div className="login__outer">
@@ -71,9 +112,11 @@ const Login = () => {
             handleLoginFormChange={handleLoginFormChange}
             handleSignupFormChange={handleSignupFormChange}
             handleLoginSubmit={handleLoginSubmit}
+            handleSignupSubmit={handleSignupSubmit}
           />
         </div>
       </section>
+     
     </div>
   );
 };

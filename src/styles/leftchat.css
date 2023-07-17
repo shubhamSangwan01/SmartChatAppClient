@@ -1,0 +1,140 @@
+.leftchat__outer{
+    box-sizing: border-box;
+    padding-left: 99px;
+    border-right: 2px solid #F5F5F5;
+    
+}
+
+.leftchat__top__heading{
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.leftchat__top{
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    margin-top: 15px;
+    border-bottom: 2px solid #F5F5F5;
+}
+
+.leftchat__top__left{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.leftchat__top__right{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leftchat__list{
+    list-style: none;
+    padding: 15px 12px;
+    
+    margin: 0;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+    flex-direction: column;
+
+}
+
+.leftchat__list>li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.leftchat__searchbar{
+    background-color: #F3F3F3;
+    border-radius: 10px;
+    
+}
+.leftchat__chat{
+    cursor: pointer;
+}
+.leftchat__searchbar>input{
+    height: 49px;
+    width: 240px;
+    border: none;
+    background-color: inherit;
+    border-radius:inherit;
+    
+}
+.leftchat__top__left__unreadMessages{
+    margin-left: 5px;
+    font-size: small;
+    font-weight: 500;
+    padding: 3px 8px;
+    
+    border-radius: 43%;
+    background-color: #F5F5F5;
+}
+#leftchat__expandIcon{
+  font-size: medium;
+}
+#leftchat__plusIcon{
+    padding: 8px;
+    background-color: #615EF0;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.6rem;
+}
+
+#leftchat__searchIcon{
+    font-size: 20px;
+    color: gray;
+    margin-right: 7px;
+    margin-left: 8px;
+}
+
+.leftchat__chatcard{
+    margin-top: 22px;
+    display: flex;
+    width: 100%;
+}
+.leftchat__chatcard__left{
+    height: 45px;
+    width: 40px;
+    border-radius: 9px;
+    background-color: aqua;
+    margin-right: 12px;
+}
+.leftchat__chatcard__right>div{
+    width: 220px;
+}
+
+.leftchat__chatcard__right__row1{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.leftchat__chatcard__right__row2>span{
+    font-size: 13px;
+    font-weight: 600;
+    color: #9DB2BF;
+}
+.leftchat__chatcard__right__row3>span{
+    font-size: 13px;
+    font-weight: 600;
+    color: #FF6000;
+    border-radius: 10px;
+    background-color:rgba(254, 235, 200, 1);
+    padding: 2px 7px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.leftchat__chatcard__right__row1__time{
+    font-size: 13px;
+    font-weight: 600;
+    color: #9DB2BF;
+}
+.leftchat__chatcard__right__row1__name{
+    font-weight: bolder;
+}

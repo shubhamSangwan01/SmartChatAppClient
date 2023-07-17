@@ -2,41 +2,35 @@ import React from 'react'
 import '../styles/Sidebar.css'
 
 
-const Sidebar = () => {
+const Sidebar = ({user,activeMenu,setActiveMenu}) => {
   return (
     <div className='chat__sidebar'>
-        <ul className='chat__sidebar__list'>
             <div className='chat__sidebar__top'>
-            <li id='chat__sidebar__avatar'>
-            <span class="material-symbols-outlined">
-             account_circle
+            <span className="avatar">
+             {user?.name[0].toUpperCase()}
              </span>
-             </li>
-        
-            <li className='chat__sidebar__middleicons'>
-              <span class="material-symbols-outlined">
-                home
-              </span>
-            </li>
-            <li className='chat__sidebar__middleicons'>
-               <span class="material-symbols-outlined">
+             
+             
+            
+               <span className={activeMenu==='messages'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('messages')}} >
                forum
                </span>
-            </li>
-            <li className='chat__sidebar__middleicons'>
-               <span class="material-symbols-outlined">
-               search
+
+               <span className={activeMenu==='addFriends'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('addFriends')}}>
+               person_add
                </span>
-            </li>
-            </div>
+               <span className={activeMenu==='createGroup'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('createGroup')}}>
+               group_add
+               </span>
+               <span className={activeMenu==='notifications'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('notifications')}}>
+               notifications
+               </span>
+               </div>
             <div className='chat__sidebar__bottom'>
-            <li id='chat__sidebar__settings'>
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
             settings
             </span>
-            </li>
             </div>
-        </ul>
 
     </div>
   )
