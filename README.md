@@ -1,2 +1,2 @@
-# SmartChatAppClient
-A Chat App that provides intuitive AI powered features. 
+# Smart Chat App Client
+A Chat App that provides intuitive AI-powered features. 
