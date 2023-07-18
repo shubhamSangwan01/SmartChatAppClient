@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Main from './pages/Main';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {

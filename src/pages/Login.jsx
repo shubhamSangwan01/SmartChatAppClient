@@ -30,8 +30,8 @@ const Login = () => {
   });
 
   const handleLoginFormChange = (e) => {
-    const { name, value } = e.target;
-    setLoginFormData((prev) => ({ ...prev, [name]: value }));
+    
+    setLoginFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const handleSignupFormChange = (e) => {
     
@@ -87,7 +87,7 @@ const Login = () => {
 
   return (
     <div className="login__outer">
-      <ToastContainer />
+      
       <Navbar handleFormTypeChange={handleFormTypeChange} />
       <section>
         <div className="loginSection_text">

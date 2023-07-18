@@ -17,7 +17,7 @@ const Form = ({
     <div className="loginForm__outer">
       {formType == "login" && (
         <form className="loginForm" 
-        // onSubmit={handleLoginSubmit}
+         onSubmit={handleLoginSubmit}
         >
           <ul className="loginForm__list">
             <li className="loginForm__input">
@@ -49,7 +49,7 @@ const Form = ({
               <span>Reset Password ?</span>
             </li>
             <li id="loginForm__signIn">
-              <button>Sign In</button>
+              <button type="submit">Sign In</button>
             </li>
             <li id="loginForm__line__li">
               <div className="loginForm__line"></div>
