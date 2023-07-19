@@ -14,6 +14,8 @@ import axios from 'axios'
 let socket;
 const ChatMain = () => {
   const [user,setUser] =React.useState(null);
+
+  const [onlineUsers,setOnlineUsers] = React.useState(null);
   const [activeChat,setActiveChat] = React.useState(null);
   const [activeMenu,setActiveMenu] = React.useState('messages');
   const [searchFriends,setSearchFriends] = React.useState('');
@@ -35,7 +37,6 @@ const ChatMain = () => {
     
   }
 
-
   useEffect(()=>{
     socket = io.connect("http://localhost:4000");
     const token = sessionStorage.getItem("authToken");
@@ -44,26 +45,29 @@ const ChatMain = () => {
 
       if(token === undefined || token=== null ){
           toast.error("Auth Token not found! Please login again.")
-          setTimeout(()=>{navigate('/')},2000) 
+          setTimeout(()=>{navigate('/')},1500) 
       }else{
         socket?.emit("new_user_add",user);
+        
         axios.post('http://localhost:5000/getrescentchats',{user})
         .then(res=>{
-          setRescentChats(res.data.rescentChats);
+          setRescentChats(res.data.rescentChats)
         })
       }
       
   },[])
 
+  
+ 
 
   useEffect(()=>{
     if(searchFriends.includes('@gmail.com')){
       axios.post('http://localhost:5000/searchuser',{searchFriends})
       .then(res=>{
-        if(res.status==202){
+        if(res.status===202){
           toast.error(res?.data.message)
         }
-        else if(res.status==200){
+        else if(res.status===200){
           const frnds = user ? res?.data.users.filter(usr=>usr.email!==user?.email):[];
           setSearchFriendsResult(frnds);
         }
@@ -78,7 +82,13 @@ const ChatMain = () => {
         <Sidebar user={user} activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
         <div className='chat__main__grid'>
         <LeftChat
-        rescentChats={rescentChats}
+        rescentChats={
+          searchChats===''?rescentChats:rescentChats.filter(chat=>{
+            if(chat.name.toLowerCase().includes(searchChats.toLowerCase())){
+              return chat;
+            }
+          })
+          }
 
         activeChat={setActiveChat}
         handleChangeActiveChat={handleChangeActiveChat}
@@ -89,7 +99,7 @@ const ChatMain = () => {
         handleSearchFriends={handleSearchFriends}
         searchFriendsResult={searchFriendsResult}
         />
-        <MiddleChat rescentChats={rescentChats} setRescentChats={setRescentChats} socket={socket} user={user} activeChat={activeChat} />
+        <MiddleChat setOnlineUsers={setOnlineUsers} onlineUsers={onlineUsers} rescentChats={rescentChats} setRescentChats={setRescentChats} socket={socket} user={user} activeChat={activeChat} />
         <RightChat/>
         </div>
         

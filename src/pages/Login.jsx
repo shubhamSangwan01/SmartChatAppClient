@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../styles/login.css";
 import Navbar from "../components/Navbar";
 import Form from "../components/Form";
-
 import axios from'axios'
 import { toast} from 'react-toastify'
 import { useNavigate } from "react-router-dom";
-
 
 const Login = () => {
   const [formType, setFormType] = React.useState("login");
@@ -39,7 +37,6 @@ const Login = () => {
   };
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-
     
     if( loginFormData.email!=="" &&  loginFormData.password!=="" ){
       const data = await axios.post('http://localhost:5000/login',loginFormData)
@@ -59,7 +56,6 @@ const Login = () => {
       
     }
     
-
   };
 
   const handleSignupSubmit = async(e)=>{
@@ -87,7 +83,6 @@ const Login = () => {
 
   return (
     <div className="login__outer">
-      <ToastContainer />
       <Navbar handleFormTypeChange={handleFormTypeChange} />
       <section>
         <div className="loginSection_text">

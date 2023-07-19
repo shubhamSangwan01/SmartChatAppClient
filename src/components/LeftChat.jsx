@@ -34,7 +34,7 @@ const LeftChat = ({activeMenu,rescentChats,handleChangeActiveChat,searchFriendsR
               <input value={searchChats} onChange={handleSearchChats} type="text" placeholder='Search chat' />
            </li>
 
-           {rescentChats.map((chat,idx)=>(<li key={idx} className='leftchat__chat'>
+           {rescentChats.map((chat,idx)=>(<li key={idx} onClick={()=>{handleChangeActiveChat(chat)}} className='leftchat__chat'>
                <div className='leftchat__chatcard'>
                    <div className='leftchat__chatcard__left'>
 

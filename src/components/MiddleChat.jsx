@@ -4,11 +4,12 @@ import '../styles/middleChat.css'
 import axios from 'axios';
 
 
-const MiddleChat = ({socket,rescentChats,setRescentChats,user,activeChat}) => {
+const MiddleChat = ({socket,setOnlineUsers,onlineUsers,rescentChats,setRescentChats,user,activeChat}) => {
   const sender = socket?.id;
   
   const [message,setMessage] = React.useState('');
   const [messageList,setMessageList] = React.useState([])
+  const [isOnline,setIsOnline] = React.useState(false)
 
 
   const handleChangeMessage = (e)=>{
@@ -21,25 +22,30 @@ const MiddleChat = ({socket,rescentChats,setRescentChats,user,activeChat}) => {
 
      const data= await axios.post('http://localhost:5000/savemessage',{from:user,to:activeChat,message})
       
-      setMessageList(list=>[...list,{message,id:user?.userId}])
+      setMessageList(list=>[...list,{message,id:user?.userId,date:`${(new Date()).getDate()}/${(new Date()).getMonth()}/${(new Date()).getFullYear()}`,time:`${(new Date()).getHours()}:${(new Date()).getMinutes()}`}])
       setMessage('')
       if(!rescentChats.some(chat=>chat.userId===activeChat.userId)){
-        setRescentChats(prev=>([...prev,{name:activeChat?.name,userId:activeChat?.userId}]))
+        setRescentChats(prev=>([...prev,{name:activeChat.name,userId:activeChat.userId}]))
       }
     }
     
   }
-  useEffect(()=>{
-   console.log(rescentChats)
-  },[rescentChats])
+  
  
   useEffect(() => {
     const receiveMessage = (data) => {
       if (!rescentChats.some((chat) => chat.userId === data.from.userId)) {
-        setRescentChats((prev) => [...prev, { name: data?.from.name, userId: data.from.userId }]);
+        setRescentChats((prev) => [...prev, { name:data?.from?.name,userId:data?.from?.userId}]);
       }
-      setMessageList((list) => [...list, { message: data.message, id: data.from }]);
+      setMessageList((list) => [...list, { date:`${(new Date()).getDate()}/${(new Date()).getMonth()}/${(new Date()).getFullYear()}`,time:`${(new Date()).getHours()}:${(new Date()).getMinutes()}`, message: data.message, id: data.from }]);
     };
+    const receiveNewUsers = (data)=>{
+      setOnlineUsers(data.activeUsers);
+      
+      console.log(data)
+    }
+    socket?.on('get-users',receiveNewUsers)
+  
 
     socket?.on('recieve_message', receiveMessage);
 
@@ -47,7 +53,43 @@ const MiddleChat = ({socket,rescentChats,setRescentChats,user,activeChat}) => {
       // Clean up the event listener when the component unmounts
       socket?.off('recieve_message', receiveMessage);
     };
-  }, [socket,rescentChats]);
+  }, [socket,rescentChats,onlineUsers]);
+
+  
+  useEffect(()=>{
+
+    // fetch chats of active chat
+    axios.post('http://localhost:5000/messages',{from:user?.userId,to:activeChat?.userId})
+    .then(res=>{
+      if(res.status===200){        
+        const msgList = res.data.messageList.map(msg=>
+          {
+            const msgDate = `${(new Date(msg.Date)).getDate()}/${(new Date(msg.Date)).getMonth()}/${(new Date(msg.Date)).getFullYear()}`
+            return {message:msg.messageBody,id:msg.from,time:msg.timestamp,date:msgDate}
+          })
+          
+        setMessageList(msgList)
+      }
+      if(onlineUsers && onlineUsers.some(usr=>usr.userId===activeChat.userId)){
+        setIsOnline(true);
+      }
+      else{
+        setIsOnline(false)
+      }
+      
+    })
+
+  },[activeChat])
+
+  useEffect(()=>{
+    if(onlineUsers && onlineUsers.some(usr=>usr.userId===activeChat?.userId)){
+     setIsOnline(true)
+    }
+    else{
+     setIsOnline(false)
+    }
+  },[onlineUsers])
+
    
   return (
     <div className='middlechat__outer'>
@@ -62,7 +104,7 @@ const MiddleChat = ({socket,rescentChats,setRescentChats,user,activeChat}) => {
               </span>
               <div className='middlechat__top__left__userInfo__status'>
               <span className='middlechat__top__left__userInfo__status__icon'>🟢</span>
-              <span className='middlechat__top__left__userInfo__status__text'>Online</span>
+              <span className='middlechat__top__left__userInfo__status__text'>{isOnline?'Online':'Offline'}</span>
               </div>
           </div>
         </div>
@@ -79,7 +121,7 @@ const MiddleChat = ({socket,rescentChats,setRescentChats,user,activeChat}) => {
 
       <div className='middlechat__middle'>
        {messageList.map((message,idx)=>(
-        <h3 key={idx} className={message.id===user.userId?'middlechat__you':'middlechat__other'}>{message.message}</h3>
+        <h3 key={idx} className={message.id===user.userId?'middlechat__you':'middlechat__other'}>{message.message} {message.date} {message.time}</h3>
        ))}
       </div>
       
