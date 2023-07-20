@@ -32,11 +32,11 @@ const Sidebar = ({user,activeMenu,setActiveMenu}) => {
                   </span>
                 </div>
                </div>
-            <div className='chat__sidebar__bottom'>
-            <span className={activeMenu==='settings'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('settings')}}>
-            settings
-            </span>
-            </div>
+              <div className='chat__sidebar__bottom'>
+                <span className={activeMenu==='settings'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('settings')}}>
+                settings
+                </span>
+              </div>
 
     </div>
   )

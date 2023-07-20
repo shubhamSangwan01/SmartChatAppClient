@@ -70,7 +70,7 @@ const Login = () => {
     }
     else if(signupFormData.name !=="" && signupFormData.email!=="" &&  signupFormData.password!=="" && signupFormData.confirmPassword!==""){
       const data = await axios.post('http://localhost:5000/signup',signupFormData)
-      if(data.data.status==200){
+      if(data.data.status===200){
         toast.success(data.data.message)
         setSignupFormData({name:'',email:'',password:'',confirmPassword:''})
         setFormType('login')

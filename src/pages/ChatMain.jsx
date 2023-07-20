@@ -16,6 +16,7 @@ const ChatMain = () => {
   const [user,setUser] =React.useState(null);
   const [activeChat,setActiveChat] = React.useState(null);
   const [activeMenu,setActiveMenu] = React.useState('messages');
+  const [activeSettingsMenu,setActiveSettingsMenu] = React.useState('profile');
   const [searchFriends,setSearchFriends] = React.useState('');
   const [searchChats,setSearchChats] = React.useState('');
   const [searchFriendsResult,setSearchFriendsResult] = React.useState([]);
@@ -79,17 +80,18 @@ const ChatMain = () => {
         <div className='chat__main__grid'>
         <LeftChat
         rescentChats={rescentChats}
-
         activeChat={setActiveChat}
         handleChangeActiveChat={handleChangeActiveChat}
         activeMenu={activeMenu}
+        activeSettingsMenu={activeSettingsMenu}
+        setActiveSettingsMenu={setActiveSettingsMenu}
         searchChats={searchChats}
         searchFriends={searchFriends}
         handleSearchChats={handleSearchChats}
         handleSearchFriends={handleSearchFriends}
         searchFriendsResult={searchFriendsResult}
         />
-        <MiddleChat rescentChats={rescentChats} setRescentChats={setRescentChats} socket={socket} user={user} activeChat={activeChat} />
+        <MiddleChat activeMenu={activeMenu} activeSettingsMenu={activeSettingsMenu} setActiveSettingsMenu={setActiveSettingsMenu} rescentChats={rescentChats} setRescentChats={setRescentChats} socket={socket} user={user} activeChat={activeChat} />
         <RightChat/>
         </div>
         
