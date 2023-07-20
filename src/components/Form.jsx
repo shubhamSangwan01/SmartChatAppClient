@@ -15,6 +15,7 @@ const Form = ({
     <div className="loginForm__outer">
       {formType == "login" && (
         <form className="loginForm" onSubmit={handleLoginSubmit}>
+
           <ul className="loginForm__list">
             <li className="loginForm__input">
               <input
