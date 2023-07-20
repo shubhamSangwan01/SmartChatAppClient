@@ -120,21 +120,15 @@
     color: #9DB2BF;
 }
 .leftchat__chatcard__right__row3>span{
-    font-size: 10.5px;
+    font-size: 13px;
     font-weight: 600;
+    color: #FF6000;
     border-radius: 10px;
-    color: green;
-    background-color: lightgreen;
+    background-color:rgba(254, 235, 200, 1);
     padding: 2px 7px;
     margin-right: 8px;
     cursor: pointer;
 }
-
-.unread__chat__span{
-    background-color:rgba(254, 235, 200, 1) !important;
-    color: #FF6000 !important;
-}
-
 
 .leftchat__chatcard__right__row1__time{
     font-size: 13px;
@@ -143,11 +137,4 @@
 }
 .leftchat__chatcard__right__row1__name{
     font-weight: bolder;
-}
-
-.unread__chat{
-    font-family: bolder;
-}
-.read__chat{
-    background-color: lightgreen;
 }
