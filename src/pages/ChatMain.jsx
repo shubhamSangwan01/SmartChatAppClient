@@ -17,10 +17,11 @@ const ChatMain = () => {
   const [activeChat, setActiveChat] = React.useState(null);
   const [activeMenu, setActiveMenu] = React.useState("messages");
   const [searchFriends, setSearchFriends] = React.useState("");
+  const [activeGroup,setActiveGroup] = React.useState(null)
   const [searchChats, setSearchChats] = React.useState("");
   const [searchFriendsResult, setSearchFriendsResult] = React.useState([]);
   const [rescentChats, setRescentChats] = React.useState([]);
-  const [groupChats, setGroupChats] = React.useState([]);
+  const [groups, setGroups] = React.useState([]);
   const [createGroup, setCreateGroup] = React.useState(false);
   const [groupInfo, setGroupInfo] = React.useState({
     groupName: "",
@@ -36,34 +37,38 @@ const ChatMain = () => {
   const handleSearchChats = (e) => {
     setSearchChats(e.target.value);
   };
+  
 
   const handleCreateGroup = async (e) => {
-     e.preventDefault();
-     
-     if(groupInfo?.name==''){
-      toast.error('Please enter name of the group.')
-     }
-     //? We also have to include ourself in the group
-     else if(groupInfo?.groupMembers.length+1<=2){
-      toast.error('A group must have atleast 3 members.')
-     }
-     else{
+    e.preventDefault();
+
+    if (groupInfo?.name == "") {
+      toast.error("Please enter name of the group.");
+    }
+    //? We also have to include ourself in the group
+    else if (groupInfo?.groupMembers.length + 1 <= 2) {
+      toast.error("A group must have atleast 3 members.");
+    } else {
       //todo:  We also have to include ourself in the group
       const modifiedGroupMembers = groupInfo.groupMembers;
-      modifiedGroupMembers.push(user)
-      console.log(modifiedGroupMembers)
-      const res=  await axios.post('http://localhost:5000/creategroup',{...groupInfo,groupMembers:modifiedGroupMembers});
-      if(res.status===200){
-        toast.success(`Group ${groupInfo?.groupName} created successfully.`)
+      modifiedGroupMembers.push(user);
+      const res = await axios.post("http://localhost:5000/creategroup", {
+        ...groupInfo,
+        groupMembers: modifiedGroupMembers,
+      });
+      if (res.status === 200) {
+        toast.success(`Group ${groupInfo?.groupName} created successfully.`);
+        setGroupInfo((prev)=>({...prev,groupName:"",groupDescription:"",groupMembers:[]}))
+      } else {
+        toast.error(res.data.message);
       }
-      else{
-        toast.error('Error creating a group please try again!')
-      }
-     }
+    }
   };
 
   const handleChangeActiveChat = async (rescentChatUser) => {
     setActiveChat(rescentChatUser);
+    setActiveGroup(null)
+    
     setUnreadUsers((prev) =>
       prev.filter((usr) => usr.userId !== rescentChatUser.userId)
     );
@@ -98,6 +103,12 @@ const ChatMain = () => {
       axios
         .get(`http://localhost:5000/unreadusers/${user.userId}`)
         .then((res) => setUnreadUsers(res.data.unreadUsers));
+
+      axios.get(`http://localhost:5000/getgroups/${user.userId}`)
+      .then(res=>{
+        setGroups(res.data.groups)
+      })
+
     }
   }, []);
 
@@ -117,6 +128,8 @@ const ChatMain = () => {
         });
     }
   }, [searchFriends]);
+
+  
 
   return (
     <div className="chat__outer">
@@ -138,15 +151,18 @@ const ChatMain = () => {
                   }
                 })
           }
+          setActiveGroup={setActiveGroup}
+          setActiveMenu={setActiveMenu}
           groupInfo={groupInfo}
           handleCreateGroup={handleCreateGroup}
+          groups={groups}
           setGroupInfo={setGroupInfo}
           setSearchFriends={setSearchFriends}
           setSearchFriendsResult={setSearchFriendsResult}
           createGroup={createGroup}
           setCreateGroup={setCreateGroup}
           unreadUsers={unreadUsers}
-          activeChat={setActiveChat}
+          setActiveChat={setActiveChat}
           handleChangeActiveChat={handleChangeActiveChat}
           activeMenu={activeMenu}
           searchChats={searchChats}
@@ -157,6 +173,7 @@ const ChatMain = () => {
         />
         <MiddleChat
           setOnlineUsers={setOnlineUsers}
+          activeGroup={activeGroup}
           unreadUsers={unreadUsers}
           setUnreadUsers={setUnreadUsers}
           onlineUsers={onlineUsers}

@@ -10,6 +10,7 @@ const LeftChat = ({
   searchFriendsResult,
   searchChats,
   searchFriends,
+  setActiveChat,
   handleSearchChats,
   handleSearchFriends,
   setSearchFriends,
@@ -19,9 +20,11 @@ const LeftChat = ({
   groupInfo,
   setSearchFriendsResult,
   setGroupInfo,
-  handleCreateGroup
+  handleCreateGroup,
+  setActiveMenu,
+  setActiveGroup,
+  groups,
 }) => {
-  
   return (
     <>
       {activeMenu === "messages" && (
@@ -54,10 +57,7 @@ const LeftChat = ({
           <div className="leftchat__bottom">
             <ul className="leftchat__list">
               <li className="leftchat__searchbar">
-                <span
-                  
-                  className="material-symbols-outlined leftchat__icon"
-                >
+                <span className="material-symbols-outlined leftchat__icon">
                   search
                 </span>
                 <input
@@ -124,6 +124,40 @@ const LeftChat = ({
                   </div>
                 </li>
               ))}
+              {groups?.map((group,idx) => (
+                <li
+                key={idx}
+                onClick={() => {
+                  setActiveGroup(group);
+                  setActiveChat(null)
+                }}
+                className="leftchat__chat"
+              >
+                <div className="leftchat__chatcard">
+                  <div className="leftchat__chatcard__left"></div>
+                  <div className="leftchat__chatcard__right">
+                    <div className="leftchat__chatcard__right__row1">
+                      <span
+                        className="leftchat__chatcard__right__row1__name"
+                      >
+                        {group?.groupName}
+                      </span>
+                      <span className="leftchat__chatcard__right__row1__time">
+                        12m
+                      </span>
+                    </div>
+
+                    <div className="leftchat__chatcard__right__row2">
+                      <span>{group?.groupDescription}</span>
+                    </div>
+                    <div className="leftchat__chatcard__right__row3">
+                      {" "}
+                      
+                    </div>
+                  </div>
+                </div>
+              </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -140,10 +174,7 @@ const LeftChat = ({
           <div className="leftchat__bottom">
             <ul className="leftchat__list">
               <li className="leftchat__searchbar">
-                <span
-                  
-                  className="material-symbols-outlined leftchat__icon"
-                >
+                <span className="material-symbols-outlined leftchat__icon">
                   search
                 </span>
                 <input
@@ -159,6 +190,9 @@ const LeftChat = ({
                     key={idx}
                     onClick={() => {
                       handleChangeActiveChat(usr);
+                      setSearchFriends("");
+                      setSearchFriendsResult([]);
+                      setActiveMenu("messages");
                     }}
                     className="leftchat__chat"
                   >
@@ -200,7 +234,7 @@ const LeftChat = ({
             </div>
           </div>
 
-          {createGroup ? (
+          {!createGroup ? (
             <div className="leftchat__bottom">
               <ul className="leftchat__list">
                 <li className="leftchat__searchbar">
@@ -209,31 +243,40 @@ const LeftChat = ({
                   </span>
                   <input type="text" placeholder="Search chat" />
                 </li>
+                {groups &&
+                  groups.map((group, idx) => (
+                    <li
+                      onClick={() => {
+                        setActiveGroup(group);
+                        setActiveChat(null);
+                      }}
+                      key={idx}
+                      className="leftchat__chat"
+                    >
+                      <div className="leftchat__chatcard">
+                        <div className="leftchat__chatcard__left"></div>
+                        <div className="leftchat__chatcard__right">
+                          <div className="leftchat__chatcard__right__row1">
+                            <span className="leftchat__chatcard__right__row1__name">
+                              {group.groupName}
+                            </span>
+                            <span className="leftchat__chatcard__right__row1__time">
+                              {group.groupMembers.length} members
+                            </span>
+                          </div>
 
-                <li className="leftchat__chat">
-                  <div className="leftchat__chatcard">
-                    <div className="leftchat__chatcard__left"></div>
-                    <div className="leftchat__chatcard__right">
-                      <div className="leftchat__chatcard__right__row1">
-                        <span className="leftchat__chatcard__right__row1__name">
-                          Ashish Kumar
-                        </span>
-                        <span className="leftchat__chatcard__right__row1__time">
-                          12m
-                        </span>
+                          <div className="leftchat__chatcard__right__row2">
+                            <span>{group.groupDescription}</span>
+                          </div>
+                          <div className="leftchat__chatcard__right__row3">
+                            {" "}
+                            <span>Question</span>
+                            <span>Help Wanted</span>
+                          </div>
+                        </div>
                       </div>
-
-                      <div className="leftchat__chatcard__right__row2">
-                        <span>Ha ha baba Black Sheep</span>
-                      </div>
-                      <div className="leftchat__chatcard__right__row3">
-                        {" "}
-                        <span>Question</span>
-                        <span>Help Wanted</span>
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                    </li>
+                  ))}
               </ul>
             </div>
           ) : (
@@ -306,7 +349,7 @@ const LeftChat = ({
                   </li>
                   <li>
                     <div className="members__grid">
-                      {groupInfo?.groupMembers.map((member,idx) => (
+                      {groupInfo?.groupMembers.map((member, idx) => (
                         <>
                           <span
                             key={idx}
@@ -363,7 +406,11 @@ const LeftChat = ({
                         </div>
                       </li>
                     ))}
-                  <Button className="create__group__btn" variant="outlined" type="submit">
+                  <Button
+                    className="create__group__btn"
+                    variant="outlined"
+                    type="submit"
+                  >
                     Create Group
                   </Button>
                 </ul>
@@ -383,10 +430,7 @@ const LeftChat = ({
           <div className="leftchat__bottom">
             <ul className="leftchat__list">
               <li className="leftchat__searchbar">
-                <span
-                  
-                  className="material-symbols-outlined leftchat__icon"
-                >
+                <span className="material-symbols-outlined leftchat__icon">
                   search
                 </span>
                 <input type="text" placeholder="Search chat" />

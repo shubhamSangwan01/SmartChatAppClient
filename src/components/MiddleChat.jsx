@@ -14,6 +14,7 @@ const MiddleChat = ({
   activeChat,
   unreadUsers,
   setUnreadUsers,
+  activeGroup,
 }) => {
   const sender = socket?.id;
 
@@ -25,42 +26,65 @@ const MiddleChat = ({
     setMessage(e.target.value);
   };
   const handleSendMessage = async (e) => {
-    if (message !== "" && activeChat) {
-      await socket?.emit("send_message", {
-        ...activeChat,
-        message,
-        from: user,
-      });
-
-      const data = await axios.post("http://localhost:5000/savemessage", {
-        from: user,
-        to: activeChat,
-        message,
-      });
-
-      setMessageList((list) => [
-        ...list,
-        {
+    if (message !== "") {
+      if (activeChat) {
+        await socket?.emit("send_message", {
+          ...activeChat,
           message,
-          id: user?.userId,
-          date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
-          time: `${new Date().getHours()}:${new Date().getMinutes()}`,
-        },
-      ]);
-      setMessage("");
-      if (!rescentChats.some((chat) => chat.userId === activeChat.userId)) {
-        setRescentChats((prev) => [
-          ...prev,
-          { name: activeChat.name, userId: activeChat.userId },
-        ]);
-      }
+          from: user,
+        });
 
-      if (!onlineUsers?.some((usr) => usr.userId === activeChat?.userId)) {
-        //? add yourself in activechat user's unread chats
-        await axios.post("http://localhost:5000/unreaduser", {
+        const data = await axios.post("http://localhost:5000/savemessage", {
           from: user,
           to: activeChat,
+          message,
         });
+
+        setMessageList((list) => [
+          ...list,
+          {
+            message,
+            id: user?.userId,
+            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
+            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+          },
+        ]);
+        setMessage("");
+        if (!rescentChats.some((chat) => chat.userId === activeChat.userId)) {
+          setRescentChats((prev) => [
+            ...prev,
+            { name: activeChat.name, userId: activeChat.userId },
+          ]);
+        }
+
+        if (!onlineUsers?.some((usr) => usr.userId === activeChat?.userId)) {
+          //? add yourself in activechat user's unread chats
+          await axios.post("http://localhost:5000/unreaduser", {
+            from: user,
+            to: activeChat,
+          });
+        }
+      } else if (activeGroup) {
+        await socket?.emit("send_group_message", {
+          message,
+          ...activeGroup,
+          from: user,
+        });
+        await axios.post("http://localhost:5000/savegroupmessage", {
+          message,
+          from: user,
+          groupId: activeGroup?.groupId,
+        });
+        setMessageList((list) => [
+          ...list,
+          {
+            message,
+            id: user?.userId,
+            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
+            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+          },
+        ]);
+        setMessage("");
       }
     } else {
       toast.error("Please select a friend to start chatting.");
@@ -105,16 +129,34 @@ const MiddleChat = ({
     const receiveNewUsers = (data) => {
       setOnlineUsers(data.activeUsers);
     };
+    const receiveGroupMessage = (data) => {
+      console.log(data);
+      console.log(activeGroup)
+      if (data?.groupId === activeGroup?.groupId) {
+        setMessageList((list) => [
+          ...list,
+          {
+            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
+            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+            message: data.message,
+            id: data.from.userId,
+          },
+        ]);
+      }
+    };
     socket?.on("get-users", receiveNewUsers);
 
     socket?.on("recieve_message", receiveMessage);
 
+    socket?.on("receive_group_message", receiveGroupMessage);
+
     return () => {
       // Clean up the event listener when the component unmounts
       socket?.off("recieve_message", receiveMessage);
+      socket?.off("receive_group_message", receiveGroupMessage);
     };
-  }, [socket, rescentChats, onlineUsers]);
-  console.log(unreadUsers);
+  }, [socket, rescentChats, onlineUsers,activeGroup]);
+
   useEffect(() => {
     // fetch chats of active chat
     axios
@@ -140,7 +182,7 @@ const MiddleChat = ({
         }
         if (
           onlineUsers &&
-          onlineUsers.some((usr) => usr.userId === activeChat.userId)
+          onlineUsers.some((usr) => usr.userId === activeChat?.userId)
         ) {
           setIsOnline(true);
         } else {
@@ -148,6 +190,28 @@ const MiddleChat = ({
         }
       });
   }, [activeChat]);
+console.log(activeChat)
+  useEffect(() => {
+    if (activeGroup !== null) {
+      socket?.emit("join_group", { activeGroup, user });
+      axios
+        .get(`http://localhost:5000/getgroupmessages/${activeGroup?.groupId}`)
+        .then((res) => {
+          const msgList = res?.data?.groupChats?.map((msg) => {
+            const msgDate = `${new Date(msg.date).getDate()}/${new Date(
+              msg.date
+            ).getMonth()}/${new Date(msg.date).getFullYear()}`;
+            return {
+              message: msg.message,
+              id: msg.from.userId,
+              time: msg.timestamp,
+              date: msgDate,
+            };
+          });
+          setMessageList(msgList)
+        });
+    }
+  }, [activeGroup]);
 
   useEffect(() => {
     if (
@@ -167,14 +231,18 @@ const MiddleChat = ({
           <div className="middlechat__top__left__avatar"></div>
           <div className="middlechat__top__left__userInfo">
             <span className="middlechat__top__left__userInfo__name">
-              {activeChat?.name}
+              {activeChat?.name || activeGroup?.groupName}
             </span>
             <div className="middlechat__top__left__userInfo__status">
-              <span className="middlechat__top__left__userInfo__status__icon">
-                🟢
-              </span>
+              {activeChat !== null && (
+                <span className="middlechat__top__left__userInfo__status__icon">
+                  🟢
+                </span>
+              )}
               <span className="middlechat__top__left__userInfo__status__text">
-                {isOnline ? "Online" : "Offline"}
+                {activeChat !== null ? (isOnline ? "Online" : "Offline") : ""}
+                {activeGroup !== null &&
+                  activeGroup.groupMembers.length + " members"}{" "}
               </span>
             </div>
           </div>
@@ -188,7 +256,7 @@ const MiddleChat = ({
       </div>
 
       <div className="middlechat__middle">
-        {messageList.map((message, idx) => (
+        {messageList?.map((message, idx) => (
           <h3
             key={idx}
             className={
