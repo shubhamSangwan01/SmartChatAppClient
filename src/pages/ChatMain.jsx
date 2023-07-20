@@ -20,6 +20,13 @@ const ChatMain = () => {
   const [searchChats, setSearchChats] = React.useState("");
   const [searchFriendsResult, setSearchFriendsResult] = React.useState([]);
   const [rescentChats, setRescentChats] = React.useState([]);
+  const [groupChats, setGroupChats] = React.useState([]);
+  const [createGroup, setCreateGroup] = React.useState(false);
+  const [groupInfo, setGroupInfo] = React.useState({
+    groupName: "",
+    groupMembers: [],
+    groupDescription: "",
+  });
 
   const navigate = useNavigate();
 
@@ -28,6 +35,31 @@ const ChatMain = () => {
   };
   const handleSearchChats = (e) => {
     setSearchChats(e.target.value);
+  };
+
+  const handleCreateGroup = async (e) => {
+     e.preventDefault();
+     
+     if(groupInfo?.name==''){
+      toast.error('Please enter name of the group.')
+     }
+     //? We also have to include ourself in the group
+     else if(groupInfo?.groupMembers.length+1<=2){
+      toast.error('A group must have atleast 3 members.')
+     }
+     else{
+      //todo:  We also have to include ourself in the group
+      const modifiedGroupMembers = groupInfo.groupMembers;
+      modifiedGroupMembers.push(user)
+      console.log(modifiedGroupMembers)
+      const res=  await axios.post('http://localhost:5000/creategroup',{...groupInfo,groupMembers:modifiedGroupMembers});
+      if(res.status===200){
+        toast.success(`Group ${groupInfo?.groupName} created successfully.`)
+      }
+      else{
+        toast.error('Error creating a group please try again!')
+      }
+     }
   };
 
   const handleChangeActiveChat = async (rescentChatUser) => {
@@ -106,6 +138,13 @@ const ChatMain = () => {
                   }
                 })
           }
+          groupInfo={groupInfo}
+          handleCreateGroup={handleCreateGroup}
+          setGroupInfo={setGroupInfo}
+          setSearchFriends={setSearchFriends}
+          setSearchFriendsResult={setSearchFriendsResult}
+          createGroup={createGroup}
+          setCreateGroup={setCreateGroup}
           unreadUsers={unreadUsers}
           activeChat={setActiveChat}
           handleChangeActiveChat={handleChangeActiveChat}
@@ -118,6 +157,8 @@ const ChatMain = () => {
         />
         <MiddleChat
           setOnlineUsers={setOnlineUsers}
+          unreadUsers={unreadUsers}
+          setUnreadUsers={setUnreadUsers}
           onlineUsers={onlineUsers}
           rescentChats={rescentChats}
           setRescentChats={setRescentChats}

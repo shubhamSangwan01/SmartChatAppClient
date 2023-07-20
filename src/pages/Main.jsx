@@ -103,7 +103,7 @@ const Main = () => {
         <div className="Intro_features_details">
           <div id="Intro_features_card" className="Intro_features_card">
             <div className="Intro_features_cardHeader">
-              <span class="material-symbols-outlined">videocam</span>
+              <span className="material-symbols-outlined">videocam</span>
               <h3>Video messaging</h3>
             </div>
             <p>
@@ -113,7 +113,7 @@ const Main = () => {
           </div>
           <div id="Intro_features_card2" className="Intro_features_card">
             <div className="Intro_features_cardHeader">
-              <span class="material-symbols-outlined">verified_user</span>
+              <span className="material-symbols-outlined">verified_user</span>
               <h3>Secure & private</h3>
             </div>
             <p>
@@ -123,7 +123,7 @@ const Main = () => {
           </div>
           <div id="Intro_features_card3" className="Intro_features_card">
             <div className="Intro_features_cardHeader">
-              <span class="material-symbols-outlined">schedule</span>
+              <span className="material-symbols-outlined">schedule</span>
               <h3>Save time</h3>
             </div>
             <p>

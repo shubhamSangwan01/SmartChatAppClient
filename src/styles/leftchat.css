@@ -84,13 +84,23 @@
     border-radius: 50%;
     color: white;
     font-size: 1.6rem;
+    cursor: pointer;
 }
 
-#leftchat__searchIcon{
+.leftchat__icon{
     font-size: 20px;
     color: gray;
     margin-right: 7px;
     margin-left: 8px;
+}
+
+.leftchat__groupHeading{
+    margin: 0;
+    margin-bottom: 10px;
+}
+.leftchat__label{
+    margin-top: 20px;
+    margin-bottom: 6px;
 }
 
 .leftchat__chatcard{
@@ -150,4 +160,24 @@
 }
 .read__chat{
     background-color: lightgreen;
+}
+
+.members__grid{
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 240px;
+    column-gap: 5px;
+    row-gap: 5px;
+}
+
+.group__members__listelement{
+    background-color: #E3DFFD;
+    padding: 3px 8px;
+    text-align: center;
+    border-radius: 9px;
+    cursor: pointer;
+}
+.create__group__btn{
+    margin-top: 20px !important;
 }

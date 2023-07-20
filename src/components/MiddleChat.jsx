@@ -12,6 +12,8 @@ const MiddleChat = ({
   setRescentChats,
   user,
   activeChat,
+  unreadUsers,
+  setUnreadUsers,
 }) => {
   const sender = socket?.id;
 
@@ -53,13 +55,15 @@ const MiddleChat = ({
         ]);
       }
 
-      if(!onlineUsers?.some(usr=>usr.userId===activeChat?.userId)){
+      if (!onlineUsers?.some((usr) => usr.userId === activeChat?.userId)) {
         //? add yourself in activechat user's unread chats
-         await axios.post('http://localhost:5000/unreaduser',{from:user,to:activeChat})
+        await axios.post("http://localhost:5000/unreaduser", {
+          from: user,
+          to: activeChat,
+        });
       }
-    }
-    else{
-      toast.error('Please select a friend to start chatting.')
+    } else {
+      toast.error("Please select a friend to start chatting.");
     }
   };
 
@@ -71,15 +75,32 @@ const MiddleChat = ({
           { name: data?.from?.name, userId: data?.from?.userId },
         ]);
       }
-      setMessageList((list) => [
-        ...list,
-        {
-          date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
-          time: `${new Date().getHours()}:${new Date().getMinutes()}`,
-          message: data.message,
-          id: data.from,
-        },
-      ]);
+      if (
+        !activeChat ||
+        (activeChat?.userId !== data.from.userId &&
+          !unreadUsers.some((usr) => usr.userId === data.from.userId))
+      ) {
+        setUnreadUsers((prev) => [...prev, { userId: data.from.userId }]);
+        axios
+          .post("http://localhost:5000/unreaduser", {
+            from: data.from,
+            to: user,
+          })
+          .then((res) =>
+            console.log("Unread history updated in backend-> ", res)
+          );
+      }
+      if (data?.from === activeChat?.userId) {
+        setMessageList((list) => [
+          ...list,
+          {
+            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
+            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+            message: data.message,
+            id: data.from,
+          },
+        ]);
+      }
     };
     const receiveNewUsers = (data) => {
       setOnlineUsers(data.activeUsers);
@@ -93,7 +114,7 @@ const MiddleChat = ({
       socket?.off("recieve_message", receiveMessage);
     };
   }, [socket, rescentChats, onlineUsers]);
-
+  console.log(unreadUsers);
   useEffect(() => {
     // fetch chats of active chat
     axios
