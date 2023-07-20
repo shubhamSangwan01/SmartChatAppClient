@@ -51,3 +51,9 @@
     background-color: #44A9F2;
     color:white;
 }
+#home{
+    margin-left: 0;
+}
+#login-signup-button{
+    margin: 0;
+}
