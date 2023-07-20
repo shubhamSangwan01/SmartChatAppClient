@@ -215,6 +215,22 @@ const LeftChat = ({activeMenu,rescentChats,handleChangeActiveChat,searchFriendsR
      </ul>
 </div>
 </div>}
+{activeMenu==='settings' && <div className='leftchat__outer'>
+
+<div className='leftchat__top'>
+
+    <div className='leftchat__top__left'>
+      <span className='leftchat__top__heading'>Settings</span>
+      
+    </div>
+    
+    
+</div>
+
+<div className='leftchat__bottom'>
+     
+</div>
+</div>}
 </> 
   )
 }

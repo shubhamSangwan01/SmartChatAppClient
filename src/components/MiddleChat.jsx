@@ -72,7 +72,6 @@ const MiddleChat = ({socket,rescentChats,setRescentChats,user,activeChat}) => {
           <span className="callIcon material-symbols-outlined">
           call
          </span>
-         <span className="middlechat__top__right__span">Call</span>
          </button>
         </div>
       </div>
