@@ -1,21 +1,21 @@
 .leftchat__outer{
     box-sizing: border-box;
-    padding-left: 78px;
+    padding-left: 99px;
     border-right: 2px solid #F5F5F5;
     
 }
 
 .leftchat__top__heading{
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-style: normal;
     font-weight: 600;
 }
 
 .leftchat__top{
     display: flex;
-    height: 3rem;
     justify-content: space-between;
-    padding: 15px 30px 10px 30px;
+    padding: 30px;
+    margin-top: 15px;
     border-bottom: 2px solid #F5F5F5;
 }
 
@@ -59,11 +59,11 @@
     cursor: pointer;
 }
 .leftchat__searchbar>input{
-    height: 2.5rem;
-    width: 14rem;
+    height: 49px;
+    width: 240px;
     border: none;
     background-color: inherit;
-    border-radius: inherit;
+    border-radius:inherit;
     
 }
 .leftchat__top__left__unreadMessages{

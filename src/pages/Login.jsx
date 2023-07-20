@@ -26,8 +26,8 @@ const Login = () => {
   });
 
   const handleLoginFormChange = (e) => {
-    
-    setLoginFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setLoginFormData((prev) => ({ ...prev, [name]: value }));
   };
   const handleSignupFormChange = (e) => {
     setSignupFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));

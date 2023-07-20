@@ -158,13 +158,11 @@ const MiddleChat = ({
             </div>
           </div>
         </div>
-        <div className='middlechat__top__right'>
-         
-         <button>
-          <span className="callIcon material-symbols-outlined">
-          call
-         </span>
-         </button>
+        <div className="middlechat__top__right">
+          <button>
+            <span className="callIcon material-symbols-outlined">call</span>
+            <span className="middlechat__top__right__span">Call</span>
+          </button>
         </div>
       </div>
 
