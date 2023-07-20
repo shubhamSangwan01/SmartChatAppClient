@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import "../styles/middleChat.css";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const MiddleChat = ({
   socket,
@@ -22,7 +23,7 @@ const MiddleChat = ({
     setMessage(e.target.value);
   };
   const handleSendMessage = async (e) => {
-    if (message !== "") {
+    if (message !== "" && activeChat) {
       await socket?.emit("send_message", {
         ...activeChat,
         message,
@@ -51,6 +52,14 @@ const MiddleChat = ({
           { name: activeChat.name, userId: activeChat.userId },
         ]);
       }
+
+      if(!onlineUsers?.some(usr=>usr.userId===activeChat?.userId)){
+        //? add yourself in activechat user's unread chats
+         await axios.post('http://localhost:5000/unreaduser',{from:user,to:activeChat})
+      }
+    }
+    else{
+      toast.error('Please select a friend to start chatting.')
     }
   };
 
@@ -74,8 +83,6 @@ const MiddleChat = ({
     };
     const receiveNewUsers = (data) => {
       setOnlineUsers(data.activeUsers);
-
-      console.log(data);
     };
     socket?.on("get-users", receiveNewUsers);
 

@@ -12,7 +12,7 @@ import axios from "axios";
 let socket;
 const ChatMain = () => {
   const [user, setUser] = React.useState(null);
-
+  const [unreadUsers, setUnreadUsers] = React.useState([]);
   const [onlineUsers, setOnlineUsers] = React.useState(null);
   const [activeChat, setActiveChat] = React.useState(null);
   const [activeMenu, setActiveMenu] = React.useState("messages");
@@ -30,8 +30,17 @@ const ChatMain = () => {
     setSearchChats(e.target.value);
   };
 
-  const handleChangeActiveChat = (user) => {
-    setActiveChat(user);
+  const handleChangeActiveChat = async (rescentChatUser) => {
+    setActiveChat(rescentChatUser);
+    setUnreadUsers((prev) =>
+      prev.filter((usr) => usr.userId !== rescentChatUser.userId)
+    );
+    if (unreadUsers?.some((usr) => usr.userId === rescentChatUser.userId)) {
+      await axios.post("http://localhost:5000/updateunreadusers", {
+        from: rescentChatUser,
+        to: user,
+      });
+    }
   };
 
   useEffect(() => {
@@ -53,6 +62,10 @@ const ChatMain = () => {
         .then((res) => {
           setRescentChats(res.data.rescentChats);
         });
+
+      axios
+        .get(`http://localhost:5000/unreadusers/${user.userId}`)
+        .then((res) => setUnreadUsers(res.data.unreadUsers));
     }
   }, []);
 
@@ -93,6 +106,7 @@ const ChatMain = () => {
                   }
                 })
           }
+          unreadUsers={unreadUsers}
           activeChat={setActiveChat}
           handleChangeActiveChat={handleChangeActiveChat}
           activeMenu={activeMenu}

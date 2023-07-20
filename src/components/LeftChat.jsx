@@ -10,6 +10,7 @@ const LeftChat = ({
   searchFriends,
   handleSearchChats,
   handleSearchFriends,
+  unreadUsers,
 }) => {
   return (
     <>
@@ -18,22 +19,22 @@ const LeftChat = ({
           <div className="leftchat__top">
             <div className="leftchat__top__left">
               <span className="leftchat__top__heading">Messages</span>
-              <span
+              {/* <span
                 id="leftchat__expandIcon"
                 className="material-symbols-outlined"
               >
                 expand_more
-              </span>
-              <span className="leftchat__top__left__unreadMessages">12</span>
+              </span> */}
+             {unreadUsers.length>0 &&<span className="leftchat__top__left__unreadMessages">{unreadUsers.length}</span>  } 
             </div>
-            <div className="leftchat__top__right">
+            {/* <div className="leftchat__top__right">
               <span
                 id="leftchat__plusIcon"
                 className="material-symbols-outlined"
               >
                 add
               </span>
-            </div>
+            </div> */}
           </div>
 
           <div className="leftchat__bottom">
@@ -65,7 +66,16 @@ const LeftChat = ({
                     <div className="leftchat__chatcard__left"></div>
                     <div className="leftchat__chatcard__right">
                       <div className="leftchat__chatcard__right__row1">
-                        <span className="leftchat__chatcard__right__row1__name">
+                        <span
+                          className={
+                            unreadUsers &&
+                            unreadUsers.some(
+                              (user) => user.userId === chat?.userId
+                            )
+                              ? "leftchat__chatcard__right__row1__name unread__chat"
+                              : "leftchat__chatcard__right__row1__name"
+                          }
+                        >
                           {chat?.name}
                         </span>
                         <span className="leftchat__chatcard__right__row1__time">
@@ -78,7 +88,19 @@ const LeftChat = ({
                       </div>
                       <div className="leftchat__chatcard__right__row3">
                         {" "}
-                        <span>Question</span>
+                        <span className={unreadUsers &&
+                          unreadUsers.some(
+                            (user) => user.userId === chat?.userId
+                          )
+                            ? "unread__chat__span"
+                            : "read__chat__span"}>
+                          {unreadUsers &&
+                          unreadUsers.some(
+                            (user) => user.userId === chat?.userId
+                          )
+                            ? "unread chat"
+                            : "read chat"}
+                        </span>
                       </div>
                     </div>
                   </div>

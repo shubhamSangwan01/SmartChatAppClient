@@ -50,7 +50,7 @@ const Login = () => {
         setTimeout(() => {
           navigate("/chat");
         }, 2000);
-        console.log(data);
+       // console.log(data);
       } else {
         toast.error(data.data.message);
       }

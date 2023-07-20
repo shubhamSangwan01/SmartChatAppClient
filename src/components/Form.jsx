@@ -58,21 +58,21 @@ const Form = ({
                   <img
                     src="/images/google.png"
                     alt="Google"
-                    onClick={console.log("google")}
+                    onClick={()=>{console.log("google")}}
                   />
                 </li>
                 <li id="apple">
                   <img
                     src="/images/apple.png"
                     alt="Google"
-                    onClick={console.log("google")}
+                    onClick={()=>{console.log("google")}}
                   />
                 </li>
                 <li id="facebook">
                   <img
                     src="/images/facebook.png"
                     alt="Google"
-                    onClick={console.log("google")}
+                    onClick={()=>{console.log("google")}}
                   />
                 </li>
               </ul>
