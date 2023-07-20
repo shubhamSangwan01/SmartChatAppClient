@@ -84,13 +84,23 @@
     border-radius: 50%;
     color: white;
     font-size: 1.6rem;
+    cursor: pointer;
 }
 
-#leftchat__searchIcon{
+.leftchat__icon{
     font-size: 20px;
     color: gray;
     margin-right: 7px;
     margin-left: 8px;
+}
+
+.leftchat__groupHeading{
+    margin: 0;
+    margin-bottom: 10px;
+}
+.leftchat__label{
+    margin-top: 20px;
+    margin-bottom: 6px;
 }
 
 .leftchat__chatcard{
@@ -120,15 +130,21 @@
     color: #9DB2BF;
 }
 .leftchat__chatcard__right__row3>span{
-    font-size: 13px;
+    font-size: 10.5px;
     font-weight: 600;
-    color: #FF6000;
     border-radius: 10px;
-    background-color:rgba(254, 235, 200, 1);
+    color: green;
+    background-color: lightgreen;
     padding: 2px 7px;
     margin-right: 8px;
     cursor: pointer;
 }
+
+.unread__chat__span{
+    background-color:rgba(254, 235, 200, 1) !important;
+    color: #FF6000 !important;
+}
+
 
 .leftchat__chatcard__right__row1__time{
     font-size: 13px;
@@ -137,4 +153,31 @@
 }
 .leftchat__chatcard__right__row1__name{
     font-weight: bolder;
+}
+
+.unread__chat{
+    font-family: bolder;
+}
+.read__chat{
+    background-color: lightgreen;
+}
+
+.members__grid{
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 240px;
+    column-gap: 5px;
+    row-gap: 5px;
+}
+
+.group__members__listelement{
+    background-color: #E3DFFD;
+    padding: 3px 8px;
+    text-align: center;
+    border-radius: 9px;
+    cursor: pointer;
+}
+.create__group__btn{
+    margin-top: 20px !important;
 }
