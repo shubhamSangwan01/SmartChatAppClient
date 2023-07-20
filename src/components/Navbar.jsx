@@ -1,25 +1,48 @@
-import React from 'react'
-import '../styles/Navbar.css'
+import React from "react";
+import "../styles/Navbar.css";
+import { Link, useNavigate } from "react-router-dom";
 
-const Navbar = ({handleFormTypeChange}) => {
+const Navbar = ({ handleFormTypeChange }) => {
+  const isLoginPage = window.location.href.includes("/login");
+  const navigate = useNavigate();
   return (
-    <div className='Navbar__outer'>
-      <div className='Navbar__left'>
-          <ul className='Navbar__list'>
-              <a href="#IntroMain">Home</a>
-              <a href="#Intro_features">Features</a>
-              <a href="">About Us</a>
-              <a href="#Footer__outer">Contact</a>
-          </ul>
+    <div className="Navbar__outer">
+      <div className="Navbar__left">
+        <ul className="Navbar__list">
+          <Link to="/">
+            <a href="#IntroMain">Home</a>
+          </Link>
+          <a href="#Intro_features">Features</a>
+          <a href="">About Us</a>
+          <a href="#Footer__outer">Contact</a>
+        </ul>
       </div>
-      <div className='Navbar__right'>
-          <ul className='Navbar__list'>
-              <a className='Navbar_button' onClick={()=>handleFormTypeChange('login')}>Sign In</a>
-              <a className='Navbar_button' onClick={()=>handleFormTypeChange('register')}>Register</a>
-          </ul>
+      <div className="Navbar__right">
+        <ul className="Navbar__list">
+          {isLoginPage && isLoginPage ? (
+            <>
+              <a
+                className="Navbar_button"
+                onClick={() => handleFormTypeChange("login")}
+              >
+                Sign In
+              </a>
+              <a
+                className="Navbar_button"
+                onClick={() => handleFormTypeChange("register")}
+              >
+                Register
+              </a>
+            </>
+          ) : (
+            <Link to="/login">
+              <a className="Navbar_button">Login/Signup</a>
+            </Link>
+          )}
+        </ul>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
