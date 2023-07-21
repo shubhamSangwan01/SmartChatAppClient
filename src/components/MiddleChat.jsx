@@ -12,8 +12,6 @@ const MiddleChat = ({
   setRescentChats,
   user,
   activeChat,
-  unreadUsers,
-  setUnreadUsers,
   activeGroup,
 }) => {
   const sender = socket?.id;
@@ -93,35 +91,23 @@ const MiddleChat = ({
 
   useEffect(() => {
     const receiveMessage = (data) => {
+      console.log(data)
+      console.log("receive Message",activeChat)
       if (!rescentChats.some((chat) => chat.userId === data.from.userId)) {
         setRescentChats((prev) => [
           ...prev,
           { name: data?.from?.name, userId: data?.from?.userId },
         ]);
       }
-      if (
-        !activeChat ||
-        (activeChat?.userId !== data.from.userId &&
-          !unreadUsers.some((usr) => usr.userId === data.from.userId))
-      ) {
-        setUnreadUsers((prev) => [...prev, { userId: data.from.userId }]);
-        axios
-          .post("http://localhost:5000/unreaduser", {
-            from: data.from,
-            to: user,
-          })
-          .then((res) =>
-            console.log("Unread history updated in backend-> ", res)
-          );
-      }
-      if (data?.from === activeChat?.userId) {
+      
+      if (data?.from.userId === activeChat?.userId) {
         setMessageList((list) => [
           ...list,
           {
             date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
             message: data.message,
-            id: data.from,
+            id: data.from.userId,
           },
         ]);
       }
@@ -155,7 +141,7 @@ const MiddleChat = ({
       socket?.off("recieve_message", receiveMessage);
       socket?.off("receive_group_message", receiveGroupMessage);
     };
-  }, [socket, rescentChats, onlineUsers,activeGroup]);
+  }, [socket, rescentChats, onlineUsers,activeGroup,activeChat]);
 
   useEffect(() => {
     // fetch chats of active chat
@@ -189,8 +175,9 @@ const MiddleChat = ({
           setIsOnline(false);
         }
       });
+      console.log("MiddleChat",activeChat)
   }, [activeChat]);
-console.log(activeChat)
+
   useEffect(() => {
     if (activeGroup !== null) {
       socket?.emit("join_group", { activeGroup, user });

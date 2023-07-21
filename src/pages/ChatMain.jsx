@@ -12,7 +12,6 @@ import axios from "axios";
 let socket;
 const ChatMain = () => {
   const [user, setUser] = React.useState(null);
-  const [unreadUsers, setUnreadUsers] = React.useState([]);
   const [onlineUsers, setOnlineUsers] = React.useState(null);
   const [activeChat, setActiveChat] = React.useState(null);
   const [activeMenu, setActiveMenu] = React.useState("messages");
@@ -67,17 +66,6 @@ const ChatMain = () => {
 
   const handleChangeActiveChat = async (rescentChatUser) => {
     setActiveChat(rescentChatUser);
-    setActiveGroup(null)
-    
-    setUnreadUsers((prev) =>
-      prev.filter((usr) => usr.userId !== rescentChatUser.userId)
-    );
-    if (unreadUsers?.some((usr) => usr.userId === rescentChatUser.userId)) {
-      await axios.post("http://localhost:5000/updateunreadusers", {
-        from: rescentChatUser,
-        to: user,
-      });
-    }
   };
 
   useEffect(() => {
@@ -100,10 +88,6 @@ const ChatMain = () => {
           setRescentChats(res.data.rescentChats);
         });
 
-      axios
-        .get(`http://localhost:5000/unreadusers/${user.userId}`)
-        .then((res) => setUnreadUsers(res.data.unreadUsers));
-
       axios.get(`http://localhost:5000/getgroups/${user.userId}`)
       .then(res=>{
         setGroups(res.data.groups)
@@ -111,6 +95,9 @@ const ChatMain = () => {
 
     }
   }, []);
+  useEffect(()=>{
+    console.log("Chat Main",activeChat)
+  },[activeChat])
 
   useEffect(() => {
     if (searchFriends.includes("@gmail.com")) {
@@ -161,7 +148,6 @@ const ChatMain = () => {
           setSearchFriendsResult={setSearchFriendsResult}
           createGroup={createGroup}
           setCreateGroup={setCreateGroup}
-          unreadUsers={unreadUsers}
           setActiveChat={setActiveChat}
           handleChangeActiveChat={handleChangeActiveChat}
           activeMenu={activeMenu}
@@ -174,8 +160,6 @@ const ChatMain = () => {
         <MiddleChat
           setOnlineUsers={setOnlineUsers}
           activeGroup={activeGroup}
-          unreadUsers={unreadUsers}
-          setUnreadUsers={setUnreadUsers}
           onlineUsers={onlineUsers}
           rescentChats={rescentChats}
           setRescentChats={setRescentChats}
