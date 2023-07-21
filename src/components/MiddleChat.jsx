@@ -114,7 +114,7 @@ const MiddleChat = ({
             console.log("Unread history updated in backend-> ", res)
           );
       }
-      if (data?.from === activeChat?.userId) {
+      if (data?.from.userId === activeChat?.userId) {
         setMessageList((list) => [
           ...list,
           {
@@ -155,7 +155,7 @@ const MiddleChat = ({
       socket?.off("recieve_message", receiveMessage);
       socket?.off("receive_group_message", receiveGroupMessage);
     };
-  }, [socket, rescentChats, onlineUsers,activeGroup]);
+  }, [socket, rescentChats, onlineUsers,activeGroup,activeChat]);
 
   useEffect(() => {
     // fetch chats of active chat
