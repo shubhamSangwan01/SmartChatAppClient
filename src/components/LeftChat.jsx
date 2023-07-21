@@ -14,6 +14,7 @@ const LeftChat = ({
   handleSearchChats,
   handleSearchFriends,
   setSearchFriends,
+  unreadUsers,
   createGroup,
   setCreateGroup,
   groupInfo,
@@ -37,11 +38,11 @@ const LeftChat = ({
               >
                 expand_more
               </span> */}
-              {/* {unreadUsers.length > 0 && (
+              {unreadUsers.length > 0 && (
                 <span className="leftchat__top__left__unreadMessages">
                   {unreadUsers.length}
                 </span>
-              )} */}
+              )}
             </div>
             {/* <div className="leftchat__top__right">
               <span
@@ -80,8 +81,14 @@ const LeftChat = ({
                     <div className="leftchat__chatcard__right">
                       <div className="leftchat__chatcard__right__row1">
                         <span
-                          className="leftchat__chatcard__right__row1__name"
-                          
+                          className={
+                            unreadUsers &&
+                            unreadUsers.some(
+                              (user) => user.userId === chat?.userId
+                            )
+                              ? "leftchat__chatcard__right__row1__name unread__chat"
+                              : "leftchat__chatcard__right__row1__name"
+                          }
                         >
                           {chat?.name}
                         </span>
@@ -96,10 +103,21 @@ const LeftChat = ({
                       <div className="leftchat__chatcard__right__row3">
                         {" "}
                         <span
-                          className="read__chat__span"
-
+                          className={
+                            unreadUsers &&
+                            unreadUsers.some(
+                              (user) => user.userId === chat?.userId
+                            )
+                              ? "unread__chat__span"
+                              : "read__chat__span"
+                          }
                         >
-                          read chat
+                          {unreadUsers &&
+                          unreadUsers.some(
+                            (user) => user.userId === chat?.userId
+                          )
+                            ? "unread chat"
+                            : "read chat"}
                         </span>
                       </div>
                     </div>
@@ -111,6 +129,7 @@ const LeftChat = ({
                 key={idx}
                 onClick={() => {
                   setActiveGroup(group);
+                  setActiveChat(null)
                 }}
                 className="leftchat__chat"
               >
@@ -229,6 +248,7 @@ const LeftChat = ({
                     <li
                       onClick={() => {
                         setActiveGroup(group);
+                        setActiveChat(null);
                       }}
                       key={idx}
                       className="leftchat__chat"
