@@ -131,7 +131,7 @@ const MiddleChat = ({
     };
     const receiveGroupMessage = (data) => {
       console.log(data);
-      console.log(activeGroup)
+      console.log(activeGroup);
       if (data?.groupId === activeGroup?.groupId) {
         setMessageList((list) => [
           ...list,
@@ -155,43 +155,47 @@ const MiddleChat = ({
       socket?.off("recieve_message", receiveMessage);
       socket?.off("receive_group_message", receiveGroupMessage);
     };
-  }, [socket, rescentChats, onlineUsers,activeGroup,activeChat]);
+  }, [socket, rescentChats, onlineUsers, activeGroup, activeChat]);
 
   useEffect(() => {
     // fetch chats of active chat
-    axios
-      .post("http://localhost:5000/messages", {
-        from: user?.userId,
-        to: activeChat?.userId,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          const msgList = res.data.messageList.map((msg) => {
-            const msgDate = `${new Date(msg.Date).getDate()}/${new Date(
-              msg.Date
-            ).getMonth()}/${new Date(msg.Date).getFullYear()}`;
-            return {
-              message: msg.messageBody,
-              id: msg.from,
-              time: msg.timestamp,
-              date: msgDate,
-            };
-          });
+    if (activeChat !== null) {
+      axios
+        .post("http://localhost:5000/messages", {
+          from: user?.userId,
+          to: activeChat?.userId,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            const msgList = res.data.messageList.map((msg) => {
+              const msgDate = `${new Date(msg.Date).getDate()}/${new Date(
+                msg.Date
+              ).getMonth()}/${new Date(msg.Date).getFullYear()}`;
+              return {
+                message: msg.messageBody,
+                id: msg.from,
+                time: msg.timestamp,
+                date: msgDate,
+              };
+            });
 
-          setMessageList(msgList);
-        }
-        if (
-          onlineUsers &&
-          onlineUsers.some((usr) => usr.userId === activeChat?.userId)
-        ) {
-          setIsOnline(true);
-        } else {
-          setIsOnline(false);
-        }
-      });
+            setMessageList(msgList);
+          }
+          if (
+            onlineUsers &&
+            onlineUsers.some((usr) => usr.userId === activeChat?.userId)
+          ) {
+            setIsOnline(true);
+          } else {
+            setIsOnline(false);
+          }
+        });
+    }
   }, [activeChat]);
-console.log(activeChat)
+
   useEffect(() => {
+    console.log(activeChat);
+    console.log(activeGroup);
     if (activeGroup !== null) {
       socket?.emit("join_group", { activeGroup, user });
       axios
@@ -208,7 +212,7 @@ console.log(activeChat)
               date: msgDate,
             };
           });
-          setMessageList(msgList)
+          setMessageList(msgList);
         });
     }
   }, [activeGroup]);
