@@ -100,11 +100,12 @@
 }
 
 .middlechat__middle {
-  height: 626px;
+  height: 615px;
   width: 768px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
 }
 
 .middlechat__messageCard {
