@@ -4,6 +4,7 @@ import "../styles/middleChat.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Form from "../components/Form";
+import ScrollToBottom from 'react-scroll-to-bottom';
 
 const MiddleChat = ({
   activeMenu,
@@ -31,7 +32,7 @@ const MiddleChat = ({
     phone: "",
     bio: "",
   });
-
+  
   const handleFormTypeChange = (type) => {
     setFormType(type);
   };
@@ -88,7 +89,13 @@ const MiddleChat = ({
     } else {
       toast.error("Please select a friend to start chatting.");
     }
-  };
+  }; 
+
+  useEffect(() => {
+    const element = document.getElementById("middlechat__anchor");
+    element.scrollIntoView();
+  }, [])
+  
 
   useEffect(() => {
     const receiveMessage = (data) => {
@@ -200,6 +207,16 @@ const MiddleChat = ({
         </>
       )
       }
+      {activeSettingsMenu !== 'profile' && (
+        <>
+        <div className="Settings_outer">
+          <div className="Settings_inner">
+            <span>This feature is coming soon!</span>
+          </div>
+        </div>
+        </>
+      )
+      }
       </>
     ) : (
       <div className="middlechat__outer">
@@ -223,26 +240,30 @@ const MiddleChat = ({
         <div className="middlechat__top__right">
           <button>
             <span className="callIcon material-symbols-outlined">call</span>
-            <span className="middlechat__top__right__span">Call</span>
           </button>
         </div>
       </div>
 
-      <div className="middlechat__middle">
+      <div className="middlechat__middle" id="middlechat__scroller">
         {messageList.map((message, idx) => (
-          <h3
+          <div
             key={idx}
             className={
               message.id === user.userId
-                ? "middlechat__you"
-                : "middlechat__other"
+                ? "middlechat__messageCard middlechat__you"
+                : "middlechat__messageCard middlechat__other" 
             }
           >
-            {message.message} {message.date} {message.time}
-          </h3>
+            <div className="middlechat__messageCard_message">
+              {message.message}
+            </div>
+            <div className="middlechat__messageCard_time">
+             {message.time}
+            </div> 
+          </div>
         ))}
+        <div id="middlechat__anchor"></div>
       </div>
-
       <div className="middlechat__bottom">
         <span className="attachmentIcon material-symbols-outlined">
           attachment

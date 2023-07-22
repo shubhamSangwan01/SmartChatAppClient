@@ -100,14 +100,79 @@
 }
 
 .middlechat__middle {
-  height: 510px;
+  height: 626px;
+  width: 768px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
 }
+
+.middlechat__messageCard {
+  width: max-content;
+  max-width: 40%;
+  margin: 2px 6px;
+  padding: 3px 13px;
+  background-color: #e6e6e6;
+  display: flex;
+  flex-direction: column;
+}
+
 .middlechat__you {
-  color: yellow;
+  align-self: self-end;
+  border-radius: 18px 18px 0 18px;
+  background-color: #7ac7ff;
 }
 .middlechat__other {
-  color: green;
+  border-radius: 0 18px 18px 18px;
+}
+
+.middlechat__messageCard_message {
+  overflow-wrap: break-word;
+}
+
+.middlechat__messageCard_time {
+  font-size: 9px;
+  align-self: flex-end;
+}
+
+#middlechat__scroller * {
+  overflow-anchor: none;
+}
+
+#middlechat__anchor {
+  overflow-anchor: auto;
+  height: 1px;
+}
+
+/* Settings */
+
+.Settings_outer {
+  background: #f5f5f5;
+  padding: 4.5rem 1rem 1.9rem 1rem;
+}
+
+.Settings_inner {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.Settings_inner > span {
+  height: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Satisfy", cursive;
+  font-size: 2.5rem;
+  text-shadow: 2px 4px 4px rgba(46, 91, 173, 0.6);
+  background-image: linear-gradient(#fff, transparent, transparent, #fff),
+    url(/public/images/comingSoon.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px;
 }

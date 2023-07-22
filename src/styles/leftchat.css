@@ -156,7 +156,6 @@
 .Settings__subCategories__container {
   display: flex;
   flex-direction: column;
-  background-color: #ebebf5;
   border-radius: 5px;
   width: 15rem;
 }
