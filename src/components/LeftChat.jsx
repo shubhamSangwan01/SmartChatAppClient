@@ -27,11 +27,12 @@ const LeftChat = ({
   return (
     <>
       {activeMenu === "messages" && (
+        <>
         <div className="leftchat__outer">
           <div className="leftchat__top">
             <div className="leftchat__top__left">
               <span className="leftchat__top__heading">Messages</span>
-              <span
+              {/*<span
                 id="leftchat__expandIcon"
                 className="material-symbols-outlined"
               >
@@ -114,6 +115,7 @@ const LeftChat = ({
             </ul>
           </div>
         </div>
+        </>
       )}
 
       {activeMenu === "addFriends" && (

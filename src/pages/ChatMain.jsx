@@ -139,7 +139,8 @@ const ChatMain = () => {
           setCreateGroup={setCreateGroup}
           unreadUsers={unreadUsers}
           activeChat={setActiveChat}
-          
+          activeSettingsMenu={activeSettingsMenu}
+          setActiveSettingsMenu={setActiveSettingsMenu}
           handleChangeActiveChat={handleChangeActiveChat}
           activeMenu={activeMenu}
           searchChats={searchChats}
@@ -149,6 +150,8 @@ const ChatMain = () => {
           searchFriendsResult={searchFriendsResult}
         />
         <MiddleChat
+          activeSettingsMenu={activeSettingsMenu}
+          setActiveSettingsMenu={setActiveSettingsMenu}
           setOnlineUsers={setOnlineUsers}
           unreadUsers={unreadUsers}
           setUnreadUsers={setUnreadUsers}
