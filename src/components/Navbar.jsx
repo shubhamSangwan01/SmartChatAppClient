@@ -1,11 +1,9 @@
-import React from "react";
-import "../styles/Navbar.css";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react'
+import '../styles/Navbar.css'
 
-const Navbar = ({ handleFormTypeChange }) => {
-  const isLoginPage = window.location.href.includes("/login");
-  const navigate = useNavigate();
+const Navbar = ({handleFormTypeChange}) => {
   return (
+
     <div className="Navbar__outer">
       <div className="Navbar__left">
         <ul className="Navbar__list">
@@ -46,7 +44,7 @@ const Navbar = ({ handleFormTypeChange }) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
