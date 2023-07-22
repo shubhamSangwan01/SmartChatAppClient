@@ -20,10 +20,13 @@ const ChatMain = () => {
   const [activeMenu, setActiveMenu] = React.useState("messages");
   const [activeSettingsMenu,setActiveSettingsMenu] = React.useState('profile');
   const [searchFriends, setSearchFriends] = React.useState("");
+  const [searchGroups, setSearchGroups] = React.useState("");
+  const [notifications, setNotifications] = React.useState([]);
+  const [activeGroup, setActiveGroup] = React.useState(null);
   const [searchChats, setSearchChats] = React.useState("");
   const [searchFriendsResult, setSearchFriendsResult] = React.useState([]);
   const [rescentChats, setRescentChats] = React.useState([]);
-  const [groupChats, setGroupChats] = React.useState([]);
+  const [groups, setGroups] = React.useState([]);
   const [createGroup, setCreateGroup] = React.useState(false);
   const [groupInfo, setGroupInfo] = React.useState({
     groupName: "",
@@ -39,34 +42,111 @@ const ChatMain = () => {
   const handleSearchChats = (e)=>{
     setSearchChats(e.target.value);
   };
+  const handleOnClickNotification = (notification) => {
+    setUnreadUsers(prev=>prev.filter(usr=>usr.userId!==notification.notifySender.userId));
+
+    const isGroup = notification?.isGroup;
+    if (!isGroup) {
+      setActiveChat(notification?.notifySender);
+      setActiveGroup(null);
+      setNotifications((prev) => {
+        return prev.filter((noti) => {
+          if (!noti.isGroup) {
+            return (
+              noti.notifySender.userId !== notification.notifySender.userId &&
+              noti.notifyData !== notification.notifyData
+            );
+          } else {
+            return noti;
+          }
+        });
+      });
+    } else {
+      setActiveGroup(
+        groups.find((grp) => grp?.groupName === notification?.group.groupName)
+      );
+      setActiveChat(null);
+      setNotifications((prev) => {
+        return prev.filter((noti) => {
+          if (!noti.isGroup) {
+            return noti;
+          } else {
+            return (
+              noti?.group.groupName !== notification?.group.groupName &&
+              noti.notifySender.userId !== notification.notifySender.userId &&
+              noti.notifyData !== notification.notifyData
+            );
+          }
+        });
+      });
+    }
+    axios
+      .post("http://localhost:5000/removesinglenotification", {
+        userId: user.userId,
+        from: notification.notifySender,
+      })
+      .then((res) => console.log(res));
+     axios.post("http://localhost:5000/updateunreadusers", {
+        from: notification.notifySender,
+        to: user,
+      }).then(res=>console.log(res))
+  };
+  const handleClearNotifications = (e) => {
+    setNotifications([]);
+    axios
+      .post("http://localhost:5000/clearnotification", { userId: user.userId })
+      .then((res) => console.log(res));
+  };
 
   const handleCreateGroup = async (e) => {
-     e.preventDefault();
-     
-     if(groupInfo?.name==''){
-      toast.error('Please enter name of the group.')
-     }
-     //? We also have to include ourself in the group
-     else if(groupInfo?.groupMembers.length+1<=2){
-      toast.error('A group must have atleast 3 members.')
-     }
-     else{
+    e.preventDefault();
+
+    if (groupInfo?.name == "") {
+      toast.error("Please enter name of the group.");
+    }
+    //? We also have to include ourself in the group
+    else if (groupInfo?.groupMembers.length + 1 <= 2) {
+      toast.error("A group must have atleast 3 members.");
+    } else {
       //todo:  We also have to include ourself in the group
       const modifiedGroupMembers = groupInfo.groupMembers;
-      modifiedGroupMembers.push(user)
-      console.log(modifiedGroupMembers)
-      const res=  await axios.post('http://localhost:5000/creategroup',{...groupInfo,groupMembers:modifiedGroupMembers});
-      if(res.status===200){
-        toast.success(`Group ${groupInfo?.groupName} created successfully.`)
+      modifiedGroupMembers.push(user);
+      socket?.emit("group_add", {
+        ...groupInfo,
+        groupMembers: modifiedGroupMembers,
+        from: user,
+      });
+
+      setGroups((prev) => [
+        ...prev,
+        {
+          ...groupInfo,
+          groupMembers: modifiedGroupMembers,
+        },
+      ]);
+
+      const res = await axios.post("http://localhost:5000/creategroup", {
+        ...groupInfo,
+        groupMembers: modifiedGroupMembers,
+      });
+      if (res.status === 200) {
+        toast.success(`Group ${groupInfo?.groupName} created successfully.`);
+        setGroupInfo((prev) => ({
+          ...prev,
+          groupName: "",
+          groupDescription: "",
+          groupMembers: [],
+        }));
+      } else {
+        toast.error(res.data.message);
       }
-      else{
-        toast.error('Error creating a group please try again!')
-      }
-     }
+    }
   };
 
   const handleChangeActiveChat = async (rescentChatUser) => {
     setActiveChat(rescentChatUser);
+    setActiveGroup(null);
+
     setUnreadUsers((prev) =>
       prev.filter((usr) => usr.userId !== rescentChatUser.userId)
     );
@@ -97,6 +177,24 @@ const ChatMain = () => {
       
   },[])
 
+      axios
+        .get(`http://localhost:5000/unreadusers/${user.userId}`)
+        .then((res) => setUnreadUsers(res.data.unreadUsers));
+
+      axios
+        .get(`http://localhost:5000/getgroups/${user.userId}`)
+        .then((res) => {
+          setGroups(res.data.groups);
+        });
+      axios
+        .get(`http://localhost:5000/getnotification/${user.userId}`)
+        .then((res) => {
+          setNotifications(res?.data?.notifications);
+        });
+    }
+  }, []);
+
+
 
   useEffect(()=>{
     if(searchFriends.includes('@gmail.com')){
@@ -116,14 +214,17 @@ const ChatMain = () => {
 
 
   return (
+
     <div className='chat__outer'> 
         <Sidebar 
           user={user} 
           activeSettingsMenu={activeSettingsMenu}
           setActiveSettingsMenu={setActiveSettingsMenu}
           activeMenu={activeMenu} 
+          notifications={notifications}
           setActiveMenu={setActiveMenu} />
         <div className='chat__main__grid'>
+
         <LeftChat
           rescentChats={
             searchChats === ""
@@ -136,14 +237,24 @@ const ChatMain = () => {
                   }
                 })
           }
+          handleOnClickNotification={handleOnClickNotification}
+          handleClearNotifications={handleClearNotifications}
+          setActiveGroup={setActiveGroup}
+          setActiveMenu={setActiveMenu}
           groupInfo={groupInfo}
           handleCreateGroup={handleCreateGroup}
+          groups={groups}
           setGroupInfo={setGroupInfo}
+          searchGroups={searchGroups}
+          setSearchGroups={setSearchGroups}
           setSearchFriends={setSearchFriends}
           setSearchFriendsResult={setSearchFriendsResult}
           createGroup={createGroup}
+          notifications={notifications}
+          setNotifications={setNotifications}
           setCreateGroup={setCreateGroup}
           unreadUsers={unreadUsers}
+          setActiveChat={setActiveChat}
           activeChat={setActiveChat}
           activeSettingsMenu={activeSettingsMenu}
           setActiveSettingsMenu={setActiveSettingsMenu}
@@ -160,6 +271,11 @@ const ChatMain = () => {
           activeSettingsMenu={activeSettingsMenu}
           setActiveSettingsMenu={setActiveSettingsMenu}
           setOnlineUsers={setOnlineUsers}
+          notifications={notifications}
+          setNotifications={setNotifications}
+          activeGroup={activeGroup}
+          setGroups={setGroups}
+          groups={groups}
           unreadUsers={unreadUsers}
           setUnreadUsers={setUnreadUsers}
           onlineUsers={onlineUsers}

@@ -46,6 +46,81 @@
   margin-right: 13px;
 }
 
+.middlechat__top{
+    display: flex;
+    padding: 30px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #F5F5F5;
+}
+
+.middlechat__top__left__userInfo{
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+.middlechat__top__left{
+    display: flex;
+}
+.middlechat__top__left__userInfo__status{
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.middlechat__top__left__userInfo__status__icon{
+    font-size: 8.5px;
+    margin-right: 8px;
+}
+
+.middlechat__top__left__userInfo__status__text{
+    font-size: small;
+    font-weight: 650;
+    color: gray;
+}
+
+.middlechat__top__left__avatar{
+    height: 52px;
+    width: 52px;
+    background-color: aquamarine;
+    border-radius: 10px;
+    margin-right: 13px;
+}
+
+.middlechat__top__left__userInfo__name{
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.middlechat__top__right{
+    display: flex;
+    align-items: center;
+}
+
+.middlechat__top__left__avatar{
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+}
+.middlechat__top__left__avatar>span{
+    font-size: 2.5rem;
+    font-weight: 530;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
+.middlechat__top__left__avatar{
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+}
+.middlechat__top__left__avatar>span{
+    font-size: 2.5rem;
+    font-weight: 530;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
+
 .middlechat__top__left__userInfo__name {
   font-weight: bold;
   font-size: 1.5rem;

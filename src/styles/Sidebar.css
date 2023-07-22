@@ -28,6 +28,15 @@
   border-radius: 8px;
 }
 
+
+.notification__number{
+    font-family: serif;
+    font-weight: bolder;
+    font-size: 16px;
+    position: absolute;
+    text-shadow: 0 0 2px red;
+}
+
 .chat__sidebar__top > div {
   padding: 10px 5px;
 }
@@ -61,3 +70,4 @@
   background-color: #615ef0;
   width: 70%;
 }
+
