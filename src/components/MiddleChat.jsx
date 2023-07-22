@@ -191,7 +191,7 @@ const MiddleChat = ({
 
   return (
     <>
-    {activeMenu === "settings" ? (
+    {activeMenu == "settings" ? (
       <>
       {activeSettingsMenu === 'profile' && (
         <>

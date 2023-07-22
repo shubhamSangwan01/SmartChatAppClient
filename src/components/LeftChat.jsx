@@ -23,7 +23,7 @@ const LeftChat = ({
   setGroupInfo,
   handleCreateGroup
 }) => {
-  
+  console.log(activeSettingsMenu)
   return (
     <>
       {activeMenu === "messages" && (

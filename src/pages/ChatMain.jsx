@@ -18,6 +18,7 @@ const ChatMain = () => {
   const [onlineUsers, setOnlineUsers] = React.useState(null);
   const [activeChat, setActiveChat] = React.useState(null);
   const [activeMenu, setActiveMenu] = React.useState("messages");
+  const [activeSettingsMenu,setActiveSettingsMenu] = React.useState('profile');
   const [searchFriends, setSearchFriends] = React.useState("");
   const [searchChats, setSearchChats] = React.useState("");
   const [searchFriendsResult, setSearchFriendsResult] = React.useState([]);
@@ -116,7 +117,12 @@ const ChatMain = () => {
 
   return (
     <div className='chat__outer'> 
-        <Sidebar user={user} activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
+        <Sidebar 
+          user={user} 
+          activeSettingsMenu={activeSettingsMenu}
+          setActiveSettingsMenu={setActiveSettingsMenu}
+          activeMenu={activeMenu} 
+          setActiveMenu={setActiveMenu} />
         <div className='chat__main__grid'>
         <LeftChat
           rescentChats={
@@ -150,6 +156,7 @@ const ChatMain = () => {
           searchFriendsResult={searchFriendsResult}
         />
         <MiddleChat
+          activeMenu={activeMenu}
           activeSettingsMenu={activeSettingsMenu}
           setActiveSettingsMenu={setActiveSettingsMenu}
           setOnlineUsers={setOnlineUsers}
