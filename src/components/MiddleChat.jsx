@@ -4,7 +4,6 @@ import "../styles/middleChat.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Form from "../components/Form";
-import ScrollToBottom from 'react-scroll-to-bottom';
 
 const MiddleChat = ({
   activeMenu,
