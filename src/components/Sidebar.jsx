@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Sidebar.css";
 
-const Sidebar = ({ user, activeMenu, setActiveMenu }) => {
+const Sidebar = ({ user, activeMenu, setActiveMenu, notifications }) => {
   return (
     <div className="chat__sidebar">
       <div className="chat__sidebar__top">
@@ -30,7 +30,7 @@ const Sidebar = ({ user, activeMenu, setActiveMenu }) => {
             setActiveMenu("addFriends");
           }}
         >
-          person_add
+          person
         </span>
         <span
           className={
@@ -42,7 +42,7 @@ const Sidebar = ({ user, activeMenu, setActiveMenu }) => {
             setActiveMenu("createGroup");
           }}
         >
-          group_add
+          groups
         </span>
         <span
           className={
@@ -55,6 +55,9 @@ const Sidebar = ({ user, activeMenu, setActiveMenu }) => {
           }}
         >
           notifications
+          <span className="notification__number">
+            {notifications?.length > 0 && notifications?.length}
+          </span>
         </span>
       </div>
       <div className="chat__sidebar__bottom">

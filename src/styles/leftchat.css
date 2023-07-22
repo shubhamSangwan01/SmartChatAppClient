@@ -181,3 +181,29 @@
 .create__group__btn{
     margin-top: 20px !important;
 }
+
+.leftchat__bottom{
+    height: 37.5rem;
+    overflow: hidden;
+}
+
+#isGroup{
+    background-color: #E3DFFD;
+}
+.bottomList{
+    padding-top: 0;
+    height: 520px;
+    overflow-y: scroll;
+}
+
+.leftchat__avatar__intitials{
+    font-size: 2rem;
+    font-weight: 540;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
+.leftchat__chatcard__left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

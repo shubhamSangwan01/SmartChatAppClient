@@ -14,7 +14,11 @@ const MiddleChat = ({
   activeChat,
   unreadUsers,
   setUnreadUsers,
+  notifications,
   activeGroup,
+  groups,
+  setNotifications,
+  setGroups,
 }) => {
   const sender = socket?.id;
 
@@ -70,6 +74,11 @@ const MiddleChat = ({
           ...activeGroup,
           from: user,
         });
+        await socket?.emit("send_groupchat_notification", {
+          ...activeGroup,
+          from: user,
+          message,
+        });
         await axios.post("http://localhost:5000/savegroupmessage", {
           message,
           from: user,
@@ -124,14 +133,48 @@ const MiddleChat = ({
             id: data.from,
           },
         ]);
+      } else if (data?.from.userId !== activeChat?.userId) {
+        
+        setNotifications(prev =>{
+          if(prev && prev.length>0){
+            return ([
+              ...prev,
+              {
+                notifyMessage: `${data.from.name} send a message.`,
+                notifyData: data.message,
+                notifySender: data.from,
+                isGroup: false,
+              },
+            ])
+          }
+          else{
+            return [{
+              notifyMessage: `${data.from.name} send a message.`,
+              notifyData: data.message,
+              notifySender: data.from,
+              isGroup: false,
+            }]
+          }
+        });
+        axios
+          .post("http://localhost:5000/savenotification", {  // my notification 
+            userId: user.userId,
+            notification: {
+              notifyMessage: `${data.from.name} send a message.`,
+              notifyData: data.message,
+              notifySender: data.from,
+              isGroup: false,
+            },
+          })
+          .then((res) => console.log(res));
       }
     };
     const receiveNewUsers = (data) => {
       setOnlineUsers(data.activeUsers);
     };
     const receiveGroupMessage = (data) => {
-      console.log(data);
-      console.log(activeGroup);
+      // console.log(data);
+      // console.log(activeGroup);
       if (data?.groupId === activeGroup?.groupId) {
         setMessageList((list) => [
           ...list,
@@ -142,6 +185,54 @@ const MiddleChat = ({
             id: data.from.userId,
           },
         ]);
+        // setNotifications(prevNot=>[...prevNot,{notifyMessage:$}])
+      }
+    };
+
+    const receiveGroupAddNotification = (data) => {
+      console.log(data);
+      setGroups((prev) => [...prev, data]);
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        {
+          notifyMessage: `${data.from.name} added you to ${data.groupName} group.`,
+          notifySender: data.from,
+          isGroup: true,
+          group: { groupName: data.groupName, groupId: data.groupId },
+        },
+      ]);
+      axios.post('http://localhost:5000/savenotification',{
+        userId:user.userId,
+        notification:{
+          notifyMessage: `${data.from.name} added you to ${data.groupName} group.`,
+          notifySender: data.from,
+          isGroup: true,
+          group: { groupName: data.groupName, groupId: data.groupId },
+        }
+      })
+    };
+    const receiveGroupChatNotification = (data) => {
+      if (activeGroup?.groupId !== data?.groupId) {
+        setNotifications((prev) => [
+          ...prev,
+          {
+            notifyMessage: `${data.from.name} send a message in ${data.groupName}.`,
+            notifyData: data.message,
+            notifySender: data.from,
+            isGroup: true,
+            group: { groupId: data.groupId, groupName: data.groupName },
+          },
+        ]);
+        axios.post('http://localhost:5000/savenotification',{
+        userId:user.userId,
+        notification:{
+          notifyMessage:`${data.from.name} send a message in ${data.groupName}.`,
+          notifyData:data.message,
+          notifySender:data.from,
+          isGroup:true,
+          group: { groupId: data.groupId, groupName: data.groupName },
+        }
+      }) 
       }
     };
     socket?.on("get-users", receiveNewUsers);
@@ -150,12 +241,28 @@ const MiddleChat = ({
 
     socket?.on("receive_group_message", receiveGroupMessage);
 
+    socket?.on("group_add_notification", receiveGroupAddNotification);
+    socket?.on("receive_groupchat_notification", receiveGroupChatNotification);
+
     return () => {
       // Clean up the event listener when the component unmounts
       socket?.off("recieve_message", receiveMessage);
       socket?.off("receive_group_message", receiveGroupMessage);
+      socket?.off("group_add_notification", receiveGroupAddNotification);
+      socket?.off(
+        "receive_groupchat_notification",
+        receiveGroupChatNotification
+      );
     };
-  }, [socket, rescentChats, onlineUsers, activeGroup, activeChat]);
+  }, [
+    socket,
+    rescentChats,
+    onlineUsers,
+    activeGroup,
+    activeChat,
+    groups,
+    notifications,
+  ]);
 
   useEffect(() => {
     // fetch chats of active chat
@@ -194,8 +301,8 @@ const MiddleChat = ({
   }, [activeChat]);
 
   useEffect(() => {
-    console.log(activeChat);
-    console.log(activeGroup);
+    // console.log(activeChat);
+    // console.log(activeGroup);
     if (activeGroup !== null) {
       socket?.emit("join_group", { activeGroup, user });
       axios
@@ -232,7 +339,7 @@ const MiddleChat = ({
     <div className="middlechat__outer">
       <div className="middlechat__top">
         <div className="middlechat__top__left">
-          <div className="middlechat__top__left__avatar"></div>
+          <div className="middlechat__top__left__avatar"><span>{activeChat?.name[0] || activeGroup?.groupName[0]}</span></div>
           <div className="middlechat__top__left__userInfo">
             <span className="middlechat__top__left__userInfo__name">
               {activeChat?.name || activeGroup?.groupName}
@@ -290,6 +397,7 @@ const MiddleChat = ({
           />
           <span
             className="material-symbols-outlined"
+            style={{cursor:'pointer'}}
             onClick={handleSendMessage}
           >
             send

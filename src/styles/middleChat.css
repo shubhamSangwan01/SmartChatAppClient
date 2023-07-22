@@ -116,3 +116,15 @@
 .middlechat__other{
     color: green;
 }
+.middlechat__top__left__avatar{
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+}
+.middlechat__top__left__avatar>span{
+    font-size: 2.5rem;
+    font-weight: 530;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
