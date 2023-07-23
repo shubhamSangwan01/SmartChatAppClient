@@ -10,8 +10,8 @@ const Sidebar = ({ user, activeMenu, setActiveMenu, notifications }) => {
 
                 <div>
                   <span className={activeMenu==='messages'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('messages')}} >
-          forum
-        </span>
+                    forum
+                  </span>
                 </div>
 
                 <div>
@@ -27,6 +27,9 @@ const Sidebar = ({ user, activeMenu, setActiveMenu, notifications }) => {
                 <div>
                   <span className={activeMenu==='notifications'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('notifications')}}>
                   notifications
+                  <span className="notification__number">
+                    {notifications?.length > 0 && notifications?.length}
+                  </span>
                   </span>
                 </div>
                </div>

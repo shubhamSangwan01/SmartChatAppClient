@@ -3,7 +3,6 @@
   flex-direction: column;
   box-sizing: border-box;
   justify-content: space-between;
-  padding-bottom: 20px;
 }
 
 .middlechat__top {
@@ -42,88 +41,17 @@
 .middlechat__top__left__avatar {
   height: 52px;
   width: 52px;
-  background-color: aquamarine;
+  background-color: #615ef0;
   border-radius: 10px;
   margin-right: 13px;
-}
-
-.middlechat__top {
-  display: flex;
-  padding: 30px;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid #f5f5f5;
-}
-
-.middlechat__top__right > button {
   display: flex;
   align-items: center;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: none;
-  background-color: #e3dffd;
-}
-.callIcon {
-  font-size: 20px;
-  font-weight: bolder;
-  color: #615ef0;
-  margin-right: 6px;
-}
-.middlechat__top__right__span {
-  font-size: 1.2rem;
-  font-weight: bolder;
-  color: #615ef0;
-}
-.middlechat__bottom {
-  width: 100%;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  height: fit-content;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.middlechat__bottom__right {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  border: 3px solid #f5f5f5;
-  border-radius: 10px;
-  padding: 5px 10px;
-}
-.middlechat__bottom__right > input {
-  width: 590px;
-  height: 100%;
-  border: none;
 }
 
-.attachmentIcon {
-  transform: rotate(-40deg);
-  margin-right: 20px;
-}
-
-.middlechat__middle {
-  height: 510px;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-}
-.middlechat__you {
-  color: yellow;
-}
-.middlechat__other {
-  color: green;
-}
-.middlechat__top__left__avatar {
-  display: flex;
-  justify-content: center;
-
-  align-items: center;
-}
 .middlechat__top__left__avatar > span {
-  font-size: 2.5rem;
-  font-weight: 530;
-  font-family: "Courier New", Courier, monospace;
+  font-size: 2rem;
+  font-weight: 520;
   color: white;
 }
 
@@ -181,12 +109,11 @@
 }
 
 .middlechat__middle {
-  height: 615px;
+  height: 560px;
   width: 768px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
 }
 
 .middlechat__messageCard {
@@ -209,8 +136,7 @@
 }
 
 .middlechat__messageCard_message {
-  align-self: end;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .middlechat__messageCard_time {

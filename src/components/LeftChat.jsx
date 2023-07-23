@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 
 const LeftChat = ({
   activeMenu,
+  activeSettingsMenu,
+  setActiveSettingsMenu,
   rescentChats,
   handleChangeActiveChat,
   searchFriendsResult,
@@ -460,6 +462,66 @@ const LeftChat = ({
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+      )}
+      {activeMenu === "settings" && (
+        <div className="leftchat__outer">
+          <div className="leftchat__top">
+            <div className="leftchat__top__left">
+              <span className="leftchat__top__heading">Settings</span>
+            </div>
+          </div>
+          <div className="leftchat__bottom">
+            <div className="Settings__categories__container">
+              <div className="Settings__categories">
+                <span className="Settings__categories__heading">Account</span>
+                <div className="Settings__subCategories__container">
+                  <div className={activeSettingsMenu==='profile'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('profile')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">person</span>
+                    <span className="Settings__subCategories__text">Profile</span>
+                  </div>
+                  <div className={activeSettingsMenu==='security'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('security')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">privacy_tip</span>
+                    <span className="Settings__subCategories__text">Security</span>
+                  </div>
+                  <div className={activeSettingsMenu==='notifications'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('notifications')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">notifications</span>
+                    <span className="Settings__subCategories__text">Notifications</span>
+                  </div>
+                  <div className={activeSettingsMenu==='privacy'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('privacy')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">lock</span>
+                    <span className="Settings__subCategories__text">Privacy</span>
+                  </div>
+                </div>
+              </div>
+              <div className="Settings__categories">
+                <span className="Settings__categories__heading">Suppport & About</span>
+                <div className="Settings__subCategories__container">
+                  <div className={activeSettingsMenu==='support'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('support')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">help</span>
+                    <span className="Settings__subCategories__text">Help & Support</span>
+                  </div>
+                  <div className={activeSettingsMenu==='policies'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('policies')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">info</span>
+                    <span className="Settings__subCategories__text">Terms and Policies</span>
+                  </div>
+                </div>
+              </div>
+              <div className="Settings__categories">
+                <span className="Settings__categories__heading">Actions</span>
+                <div className="Settings__subCategories__container">
+                  <div className={activeSettingsMenu==='report'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('report')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">flag</span>
+                    <span className="Settings__subCategories__text">Report a problem</span>
+                  </div>
+                  <div className={activeSettingsMenu==='log_out'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('log_out')}}>
+                    <span class="material-symbols-outlined Settings__subCategories__image">logout</span>
+                    <span className="Settings__subCategories__text">Log out</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
