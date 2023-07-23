@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import "../styles/middleChat.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Form from "./Form"
-
+import Form from "./Form";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 const MiddleChat = ({
   activeMenu,
   activeSettingsMenu,
@@ -36,13 +37,21 @@ const MiddleChat = ({
     phone: "",
     bio: "",
   });
-  
+  const [toggleEmojiPicker, setToggleEmojiPicker] = React.useState(false);
+
+  const handleOnClickEmoji = (emoji) => {
+    setMessage((prev) => prev + emoji.native);
+  };
+
   const handleFormTypeChange = (type) => {
     setFormType(type);
   };
 
   const handleCredentialsFormChange = (e) => {
-    setCredentialsFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setCredentialsFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleCredentialsSubmit = async (e) => {
@@ -53,20 +62,11 @@ const MiddleChat = ({
     setMessage(e.target.value);
   };
   const handleSendMessage = async (e) => {
-    if (message !== "") {
+    if(message==='' || (!activeChat && !activeGroup)){
+      toast.error("Please select a chat to start.")
+    }
+    else if (message !== "") {
       if (activeChat) {
-        await socket?.emit("send_message", {
-          ...activeChat,
-          message,
-          from: user,
-        });
-
-        const data = await axios.post("http://localhost:5000/savemessage", {
-          from: user,
-          to: activeChat,
-          message,
-        });
-
         setMessageList((list) => [
           ...list,
           {
@@ -76,6 +76,31 @@ const MiddleChat = ({
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
           },
         ]);
+        setToggleEmojiPicker(false);
+        await socket?.emit("send_message", {
+          ...activeChat,
+          message,
+          from: user,
+        });
+
+        if (!onlineUsers.some((usr) => usr.userId === activeChat?.userId)) {
+          axios.post("http://localhost:5000/savenotification", {
+            userId: activeChat?.userId,
+            notification: {
+              notifyMessage: `${user.name} send you a message.`,
+              notifyData: message,
+              notifySender: user,
+              isGroup: false,
+            },
+          });
+        }
+
+        const data = await axios.post("http://localhost:5000/savemessage", {
+          from: user,
+          to: activeChat,
+          message,
+        });
+
         setMessage("");
         if (!rescentChats.some((chat) => chat.userId === activeChat.userId)) {
           setRescentChats((prev) => [
@@ -92,6 +117,17 @@ const MiddleChat = ({
           });
         }
       } else if (activeGroup) {
+        setMessageList((list) => [
+          ...list,
+          {
+            message,
+            id: user?.userId,
+            name: user?.name,
+            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
+            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+          },
+        ]);
+        setToggleEmojiPicker(false)
         await socket?.emit("send_group_message", {
           message,
           ...activeGroup,
@@ -102,24 +138,32 @@ const MiddleChat = ({
           from: user,
           message,
         });
+
+        setMessage("");
         await axios.post("http://localhost:5000/savegroupmessage", {
           message,
           from: user,
           groupId: activeGroup?.groupId,
         });
-        setMessageList((list) => [
-          ...list,
-          {
-            message,
-            id: user?.userId,
-            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
-            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
-          },
-        ]);
-        setMessage("");
+
+        const offlineUsers = activeGroup?.groupMembers.filter((mem) => {
+          if (!onlineUsers?.some((usr) => usr.userId === mem.userId)) {
+            return mem;
+          }
+        });
+        offlineUsers.forEach((offlineUser) => {
+          axios.post("http://localhost:5000/savenotification", {
+            userId: offlineUser.userId,
+            notification: {
+              notifyMessage: `${user?.name} send a message in ${activeGroup?.groupName}.`,
+              notifyData: message,
+              notifySender: user,
+              isGroup: true,
+              group: { groupName: activeGroup.groupName },
+            },
+          });
+        });
       }
-    } else {
-      toast.error("Please select a friend to start chatting.");
     }
   };
 
@@ -157,10 +201,9 @@ const MiddleChat = ({
           },
         ]);
       } else if (data?.from.userId !== activeChat?.userId) {
-        
-        setNotifications(prev =>{
-          if(prev && prev.length>0){
-            return ([
+        setNotifications((prev) => {
+          if (prev && prev.length > 0) {
+            return [
               ...prev,
               {
                 notifyMessage: `${data.from.name} send a message.`,
@@ -168,19 +211,21 @@ const MiddleChat = ({
                 notifySender: data.from,
                 isGroup: false,
               },
-            ])
-          }
-          else{
-            return [{
-              notifyMessage: `${data.from.name} send a message.`,
-              notifyData: data.message,
-              notifySender: data.from,
-              isGroup: false,
-            }]
+            ];
+          } else {
+            return [
+              {
+                notifyMessage: `${data.from.name} send a message.`,
+                notifyData: data.message,
+                notifySender: data.from,
+                isGroup: false,
+              },
+            ];
           }
         });
         axios
-          .post("http://localhost:5000/savenotification", {  // my notification 
+          .post("http://localhost:5000/savenotification", {
+            // my notification
             userId: user.userId,
             notification: {
               notifyMessage: `${data.from.name} send a message.`,
@@ -204,6 +249,7 @@ const MiddleChat = ({
           {
             date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+            name: data.from.name,
             message: data.message,
             id: data.from.userId,
           },
@@ -224,15 +270,15 @@ const MiddleChat = ({
           group: { groupName: data.groupName, groupId: data.groupId },
         },
       ]);
-      axios.post('http://localhost:5000/savenotification',{
-        userId:user.userId,
-        notification:{
+      axios.post("http://localhost:5000/savenotification", {
+        userId: user.userId,
+        notification: {
           notifyMessage: `${data.from.name} added you to ${data.groupName} group.`,
           notifySender: data.from,
           isGroup: true,
           group: { groupName: data.groupName, groupId: data.groupId },
-        }
-      })
+        },
+      });
     };
     const receiveGroupChatNotification = (data) => {
       if (activeGroup?.groupId !== data?.groupId) {
@@ -246,16 +292,16 @@ const MiddleChat = ({
             group: { groupId: data.groupId, groupName: data.groupName },
           },
         ]);
-        axios.post('http://localhost:5000/savenotification',{
-        userId:user.userId,
-        notification:{
-          notifyMessage:`${data.from.name} send a message in ${data.groupName}.`,
-          notifyData:data.message,
-          notifySender:data.from,
-          isGroup:true,
-          group: { groupId: data.groupId, groupName: data.groupName },
-        }
-      }) 
+        axios.post("http://localhost:5000/savenotification", {
+          userId: user.userId,
+          notification: {
+            notifyMessage: `${data.from.name} send a message in ${data.groupName}.`,
+            notifyData: data.message,
+            notifySender: data.from,
+            isGroup: true,
+            group: { groupId: data.groupId, groupName: data.groupName },
+          },
+        });
       }
     };
     socket?.on("get-users", receiveNewUsers);
@@ -338,6 +384,7 @@ const MiddleChat = ({
             return {
               message: msg.message,
               id: msg.from.userId,
+              name: msg.from.name,
               time: msg.timestamp,
               date: msgDate,
             };
@@ -360,105 +407,126 @@ const MiddleChat = ({
 
   return (
     <>
-    {activeMenu === "settings" ? (
-      <>
-      {activeSettingsMenu === 'profile' && (
+      {activeMenu === "settings" ? (
         <>
-        <Form
-            formType={formType}
-            credentialsFormData={credentialsFormData}
-            setCredentialsFormData={setCredentialsFormData}
-            handleCredentialsFormChange={handleCredentialsFormChange}
-            handleCredentialsSubmit={handleCredentialsSubmit}
-            handleFormTypeChange={handleFormTypeChange}
-          />
+          {activeSettingsMenu === "profile" && (
+            <>
+              <Form
+                formType={formType}
+                credentialsFormData={credentialsFormData}
+                setCredentialsFormData={setCredentialsFormData}
+                handleCredentialsFormChange={handleCredentialsFormChange}
+                handleCredentialsSubmit={handleCredentialsSubmit}
+                handleFormTypeChange={handleFormTypeChange}
+              />
+            </>
+          )}
+          {activeSettingsMenu !== "profile" && (
+            <>
+              <div className="Settings_outer">
+                <div className="Settings_inner">
+                  <span>This feature is coming soon!</span>
+                </div>
+              </div>
+            </>
+          )}
         </>
-      )
-      }
-      {activeSettingsMenu !== 'profile' && (
-        <>
-        <div className="Settings_outer">
-          <div className="Settings_inner">
-            <span>This feature is coming soon!</span>
+      ) : (
+        <div className="middlechat__outer">
+          <div className="middlechat__top">
+            <div className="middlechat__top__left">
+              <div className="middlechat__top__left__avatar">
+                <span>{activeChat?.name[0] || activeGroup?.groupName[0]}</span>
+              </div>
+              <div className="middlechat__top__left__userInfo">
+                <span className="middlechat__top__left__userInfo__name">
+                  {activeChat?.name || activeGroup?.groupName}
+                </span>
+                <div className="middlechat__top__left__userInfo__status">
+                  <span className="middlechat__top__left__userInfo__status__text">
+                    {activeChat !== null
+                      ? isOnline
+                        ? "🟢 Online"
+                        : "🔴 Offline"
+                      : ""}
+                    {activeGroup !== null &&
+                      activeGroup.groupMembers.length + " members"}{" "}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="middlechat__top__right">
+              <button>
+                <span className="callIcon material-symbols-outlined">call</span>
+              </button>
+            </div>
           </div>
-        </div>
-        </>
-      )
-      }
-      </>
-    ) : (
-      <div className="middlechat__outer">
-      <div className="middlechat__top">
-        <div className="middlechat__top__left">
-          <div className="middlechat__top__left__avatar"><span>{activeChat?.name[0] || activeGroup?.groupName[0]}</span></div>
-          <div className="middlechat__top__left__userInfo">
-            <span className="middlechat__top__left__userInfo__name">
-              {activeChat?.name || activeGroup?.groupName}
+
+          <div className="middlechat__middle" id="middlechat__scroller">
+            {messageList.map((message, idx) => (
+              <div
+                key={idx}
+                className={
+                  message.id === user.userId
+                    ? "middlechat__messageCard middlechat__you"
+                    : "middlechat__messageCard middlechat__other"
+                }
+              >
+                <div className="middlechat__messageCard_name">
+                  <span>
+                    {message.id !== user.userId &&
+                      message?.name != undefined &&
+                      "~" + message?.name}
+                  </span>
+                </div>
+                <div className="middlechat__messageCard_message">
+                  {message.message}
+                </div>
+                <div className="middlechat__messageCard_time">
+                  {message.time}
+                </div>
+              </div>
+            ))}
+            <div id="middlechat__anchor"></div>
+          </div>
+
+          <div className="middlechat__bottom">
+            <span className="attachmentIcon material-symbols-outlined">
+              attachment
             </span>
-            <div className="middlechat__top__left__userInfo__status">
-              <span className="middlechat__top__left__userInfo__status__text">
-                {activeChat !== null ? (isOnline ? "🟢 Online" : "🔴 Offline") : ""}
-                {activeGroup !== null &&
-                  activeGroup.groupMembers.length + " members"}{" "}
+            <button
+            className="emojiPickerButton"
+              onClick={() => {
+                setToggleEmojiPicker((prev) => !prev);
+              }}
+            >
+              <span class="material-symbols-outlined">mood</span>
+            </button>
+            {toggleEmojiPicker &&<div  className="emojiPicker"> <Picker data={data} onEmojiSelect={handleOnClickEmoji} /></div>}
+
+            <div className="middlechat__bottom__right">
+              <input
+                type="text"
+                onKeyPress={(e) => {
+                  e.key === "Enter" && handleSendMessage();
+                }}
+                value={message}
+                onChange={handleChangeMessage}
+                placeholder="Type a message"
+              />
+              <span
+                className="material-symbols-outlined"
+                style={{ cursor: "pointer" }}
+                onClick={handleSendMessage}
+              >
+                send
               </span>
             </div>
           </div>
         </div>
-        <div className="middlechat__top__right">
-          <button>
-            <span className="callIcon material-symbols-outlined">call</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="middlechat__middle" id="middlechat__scroller">
-        {messageList.map((message, idx) => (
-          <div
-            key={idx}
-            className={
-              message.id === user.userId
-                ? "middlechat__messageCard middlechat__you"
-                : "middlechat__messageCard middlechat__other" 
-            }
-          >
-            <div className="middlechat__messageCard_message">
-              {message.message}
-            </div>
-            <div className="middlechat__messageCard_time">
-             {message.time}
-            </div> 
-          </div>
-        ))}
-        <div id="middlechat__anchor"></div>
-      </div>
-
-      <div className="middlechat__bottom">
-        <span className="attachmentIcon material-symbols-outlined">
-          attachment
-        </span>
-        <div className="middlechat__bottom__right">
-          <input
-            type="text"
-            onKeyPress={(e) => {
-              e.key === "Enter" && handleSendMessage();
-            }}
-            value={message}
-            onChange={handleChangeMessage}
-            placeholder="Type a message"
-          />
-          <span
-            className="material-symbols-outlined"
-            style={{cursor:'pointer'}}
-            onClick={handleSendMessage}
-          >
-            send
-          </span>
-        </div>
-      </div>
-    </div>
-    
-  )}
-  </>)
+      )}
+    </>
+  );
 };
 
 export default MiddleChat;

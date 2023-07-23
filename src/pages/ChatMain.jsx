@@ -127,6 +127,24 @@ const ChatMain = () => {
         ...groupInfo,
         groupMembers: modifiedGroupMembers,
       });
+      const offlineUsers = groupInfo.groupMembers.filter(mem=>{
+        if(!onlineUsers?.some(usr=>usr.userId===mem.userId)){
+          return mem;
+        }
+      })
+      offlineUsers.forEach(offlineUser=>{
+        axios.post('http://localhost:5000/savenotification',{
+        userId:offlineUser.userId,
+        notification:{
+          notifyMessage:`${user.name} added you to ${groupInfo.groupName}.`,
+          notifyData:"Group added",
+          notifySender:user,
+          isGroup:true,
+          group: { groupName: groupInfo.groupName },
+        }
+      })
+      })
+
       if (res.status === 200) {
         toast.success(`Group ${groupInfo?.groupName} created successfully.`);
         setGroupInfo((prev) => ({
@@ -154,6 +172,12 @@ const ChatMain = () => {
         to: user,
       });
     }
+    // 
+    setNotifications(prevNoti=>prevNoti.filter(noti=>{
+      if(!unreadUsers.some(usr=>usr.userId===noti.notifySender.userId)){
+        return noti;
+      }
+    }))
   };
 
   useEffect(() => {
