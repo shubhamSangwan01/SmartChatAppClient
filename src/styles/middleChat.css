@@ -128,7 +128,8 @@
 }
 
 .middlechat__messageCard_message {
-  overflow-wrap: break-word;
+  align-self: end;
+  overflow-wrap: anywhere;
 }
 
 .middlechat__messageCard_time {
