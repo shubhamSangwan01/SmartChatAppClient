@@ -105,7 +105,7 @@
 
 .attachmentIcon {
   transform: rotate(-40deg);
-  margin-right: 20px;
+  margin-right: 5px;
 }
 
 .middlechat__middle {
@@ -189,4 +189,22 @@
 .middlechat__messageCard_name>span{
   font-size: 11px;
     font-family: Cursive,monospace;
+}
+
+.emojiPicker{
+  position: absolute;
+  bottom: 50px;
+  left: 460px;
+}
+.emojiPickerButton{
+  cursor: pointer;
+  padding: 0;
+  background: white;
+  border: none;
+  margin-right: 10px;
+}
+
+.emojiPickerButton>span{
+  font-weight: 300;
+  font-size: 1.6rem;
 }
