@@ -2,7 +2,10 @@ import React from 'react'
 import '../styles/Sidebar.css'
 
 
-const Sidebar = ({user,activeMenu,setActiveMenu}) => {
+const Sidebar = ({ user, activeMenu, setActiveMenu, notifications }) => {
+
+
+
   return (
     <div className='chat__sidebar'>
             <div className='chat__sidebar__top'>
@@ -37,6 +40,51 @@ const Sidebar = ({user,activeMenu,setActiveMenu}) => {
                 settings
                 </span>
               </div>
+
+
+        <span
+          className={
+            activeMenu === "addFriends"
+              ? "material-symbols-outlined active"
+              : "material-symbols-outlined"
+          }
+          onClick={() => {
+            setActiveMenu("addFriends");
+          }}
+        >
+          person
+        </span>
+        <span
+          className={
+            activeMenu === "createGroup"
+              ? "material-symbols-outlined active"
+              : "material-symbols-outlined"
+          }
+          onClick={() => {
+            setActiveMenu("createGroup");
+          }}
+        >
+          groups
+        </span>
+        <span
+          className={
+            activeMenu === "notifications"
+              ? "material-symbols-outlined active"
+              : "material-symbols-outlined"
+          }
+          onClick={() => {
+            setActiveMenu("notifications");
+          }}
+        >
+          notifications
+          <span className="notification__number">
+            {notifications?.length > 0 && notifications?.length}
+          </span>
+        </span>
+      </div>
+      <div className="chat__sidebar__bottom">
+        <span className="material-symbols-outlined">settings</span>
+      </div>
 
     </div>
   )
