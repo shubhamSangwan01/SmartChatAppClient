@@ -113,6 +113,7 @@ const MiddleChat = ({
           {
             message,
             id: user?.userId,
+            name:user?.name,
             date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
           },
@@ -240,6 +241,7 @@ const MiddleChat = ({
           {
             date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+            name:data.from.name,
             message: data.message,
             id: data.from.userId,
           },
@@ -374,6 +376,7 @@ const MiddleChat = ({
             return {
               message: msg.message,
               id: msg.from.userId,
+              name:msg.from.name,
               time: msg.timestamp,
               date: msgDate,
             };
@@ -456,7 +459,9 @@ const MiddleChat = ({
                 ? "middlechat__messageCard middlechat__you"
                 : "middlechat__messageCard middlechat__other" 
             }
-          >
+          ><div className="middlechat__messageCard_name">
+            <span>{message.id!==user.userId && message?.name!=undefined && '~'+message?.name}</span>
+            </div>
             <div className="middlechat__messageCard_message">
               {message.message}
             </div>

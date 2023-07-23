@@ -185,3 +185,8 @@
   background-size: cover;
   border-radius: 5px;
 }
+
+.middlechat__messageCard_name>span{
+  font-size: 11px;
+    font-family: Cursive,monospace;
+}
