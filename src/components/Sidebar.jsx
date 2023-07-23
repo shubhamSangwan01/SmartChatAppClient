@@ -3,20 +3,15 @@ import '../styles/Sidebar.css'
 
 
 const Sidebar = ({ user, activeMenu, setActiveMenu, notifications }) => {
-
-
-
   return (
-    <div className='chat__sidebar'>
-            <div className='chat__sidebar__top'>
-              <span className="avatar">
-              {user?.name[0].toUpperCase()}
-              </span>
-              
+    <div className="chat__sidebar">
+      <div className="chat__sidebar__top">
+        <span className="avatar">{user?.name[0].toUpperCase()}</span>
+
                 <div>
                   <span className={activeMenu==='messages'?"material-symbols-outlined active":"material-symbols-outlined"} onClick={()=>{setActiveMenu('messages')}} >
-                  forum
-                  </span>
+          forum
+        </span>
                 </div>
 
                 <div>
@@ -42,52 +37,10 @@ const Sidebar = ({ user, activeMenu, setActiveMenu, notifications }) => {
               </div>
 
 
-        <span
-          className={
-            activeMenu === "addFriends"
-              ? "material-symbols-outlined active"
-              : "material-symbols-outlined"
-          }
-          onClick={() => {
-            setActiveMenu("addFriends");
-          }}
-        >
-          person
-        </span>
-        <span
-          className={
-            activeMenu === "createGroup"
-              ? "material-symbols-outlined active"
-              : "material-symbols-outlined"
-          }
-          onClick={() => {
-            setActiveMenu("createGroup");
-          }}
-        >
-          groups
-        </span>
-        <span
-          className={
-            activeMenu === "notifications"
-              ? "material-symbols-outlined active"
-              : "material-symbols-outlined"
-          }
-          onClick={() => {
-            setActiveMenu("notifications");
-          }}
-        >
-          notifications
-          <span className="notification__number">
-            {notifications?.length > 0 && notifications?.length}
-          </span>
-        </span>
-      </div>
-      <div className="chat__sidebar__bottom">
-        <span className="material-symbols-outlined">settings</span>
-      </div>
+        
 
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

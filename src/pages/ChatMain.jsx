@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react'
-import Sidebar from '../components/Sidebar'
-import LeftChat from '../components/LeftChat'
-import MiddleChat from '../components/MiddleChat'
-import RightChat from '../components/RightChat'
-import io from 'socket.io-client'
-import '../styles/chatmain.css'
-import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-
-
+import React, { useEffect } from "react";
+import Sidebar from "../components/Sidebar";
+import LeftChat from "../components/LeftChat";
+import MiddleChat from "../components/MiddleChat";
+import RightChat from "../components/RightChat";
+import io from "socket.io-client";
+import "../styles/chatmain.css";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 let socket;
 const ChatMain = () => {
@@ -36,10 +34,10 @@ const ChatMain = () => {
 
   const navigate = useNavigate();
 
-  const handleSearchFriends = (e)=>{
+  const handleSearchFriends = (e) => {
     setSearchFriends(e.target.value);
-  }
-  const handleSearchChats = (e)=>{
+  };
+  const handleSearchChats = (e) => {
     setSearchChats(e.target.value);
   };
   const handleOnClickNotification = (notification) => {
@@ -158,24 +156,25 @@ const ChatMain = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     socket = io.connect("http://localhost:4000");
     const token = sessionStorage.getItem("authToken");
-    const user = JSON.parse(sessionStorage.getItem("User"))
-    setUser(user)
+    const user = JSON.parse(sessionStorage.getItem("User"));
+    setUser(user);
 
-      if(token === undefined || token=== null ){
-          toast.error("Auth Token not found! Please login again.")
-          setTimeout(()=>{navigate('/')},2000) 
-      }else{
-        socket?.emit("new_user_add",user);
-        axios.post('http://localhost:5000/getrescentchats',{user})
-        .then(res=>{
+    if (token === undefined || token === null) {
+      toast.error("Auth Token not found! Please login again.");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } else {
+      socket?.emit("new_user_add", user);
+
+      axios
+        .post("http://localhost:5000/getrescentchats", { user })
+        .then((res) => {
           setRescentChats(res.data.rescentChats);
-        })
-      }
-      
-  },[])
+        });
 
       axios
         .get(`http://localhost:5000/unreadusers/${user.userId}`)
@@ -194,37 +193,34 @@ const ChatMain = () => {
     }
   }, []);
 
-
-
-  useEffect(()=>{
-    if(searchFriends.includes('@gmail.com')){
-      axios.post('http://localhost:5000/searchuser',{searchFriends})
-      .then(res=>{
-        if(res.status==202){
-          toast.error(res?.data.message)
-        }
-        else if(res.status==200){
-          const frnds = user ? res?.data.users.filter(usr=>usr.email!==user?.email):[];
-          setSearchFriendsResult(frnds);
-        }
-        
-      });
+  useEffect(() => {
+    if (searchFriends.includes("@gmail.com")) {
+      axios
+        .post("http://localhost:5000/searchuser", { searchFriends })
+        .then((res) => {
+          if (res.status === 202) {
+            toast.error(res?.data.message);
+          } else if (res.status === 200) {
+            const frnds = user
+              ? res?.data.users.filter((usr) => usr.email !== user?.email)
+              : [];
+            setSearchFriendsResult(frnds);
+          }
+        });
     }
-  },[searchFriends])
-
+  }, [searchFriends]);
 
   return (
-
-    <div className='chat__outer'> 
-        <Sidebar 
-          user={user} 
+    <div className="chat__outer">
+      <Sidebar
+        user={user}
           activeSettingsMenu={activeSettingsMenu}
           setActiveSettingsMenu={setActiveSettingsMenu}
-          activeMenu={activeMenu} 
-          notifications={notifications}
-          setActiveMenu={setActiveMenu} />
-        <div className='chat__main__grid'>
-
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        notifications={notifications}
+      />
+      <div className="chat__main__grid">
         <LeftChat
           rescentChats={
             searchChats === ""
@@ -288,7 +284,7 @@ const ChatMain = () => {
         <RightChat />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatMain
+export default ChatMain;
