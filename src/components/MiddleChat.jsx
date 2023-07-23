@@ -55,18 +55,6 @@ const MiddleChat = ({
   const handleSendMessage = async (e) => {
     if (message !== "") {
       if (activeChat) {
-        await socket?.emit("send_message", {
-          ...activeChat,
-          message,
-          from: user,
-        });
-
-        const data = await axios.post("http://localhost:5000/savemessage", {
-          from: user,
-          to: activeChat,
-          message,
-        });
-
         setMessageList((list) => [
           ...list,
           {
@@ -76,6 +64,34 @@ const MiddleChat = ({
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
           },
         ]);
+        await socket?.emit("send_message", {
+          ...activeChat,
+          message,
+          from: user,
+        });
+
+        
+        if(!onlineUsers.some(usr=>usr.userId===activeChat?.userId)){
+          axios.post('http://localhost:5000/savenotification',{
+            userId:activeChat?.userId,
+            notification:{
+              notifyMessage:`${user.name} send you a message.`,
+              notifyData:message,
+              notifySender:user,
+              isGroup:false,
+            }
+          })
+        }
+          
+        
+
+        const data = await axios.post("http://localhost:5000/savemessage", {
+          from: user,
+          to: activeChat,
+          message,
+        });
+
+        
         setMessage("");
         if (!rescentChats.some((chat) => chat.userId === activeChat.userId)) {
           setRescentChats((prev) => [
@@ -92,6 +108,15 @@ const MiddleChat = ({
           });
         }
       } else if (activeGroup) {
+        setMessageList((list) => [
+          ...list,
+          {
+            message,
+            id: user?.userId,
+            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
+            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+          },
+        ]);
         await socket?.emit("send_group_message", {
           message,
           ...activeGroup,
@@ -102,21 +127,32 @@ const MiddleChat = ({
           from: user,
           message,
         });
+        
+        setMessage("");
         await axios.post("http://localhost:5000/savegroupmessage", {
           message,
           from: user,
           groupId: activeGroup?.groupId,
         });
-        setMessageList((list) => [
-          ...list,
-          {
-            message,
-            id: user?.userId,
-            date: `${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`,
-            time: `${new Date().getHours()}:${new Date().getMinutes()}`,
-          },
-        ]);
-        setMessage("");
+
+        const offlineUsers = activeGroup?.groupMembers.filter(mem=>{
+          if(!onlineUsers?.some(usr=>usr.userId===mem.userId)){
+            return mem;
+          }
+        })
+        offlineUsers.forEach(offlineUser=>{
+          axios.post('http://localhost:5000/savenotification',{
+          userId:offlineUser.userId,
+          notification:{
+            notifyMessage:`${user?.name} send a message in ${activeGroup?.groupName}.`,
+            notifyData:message,
+            notifySender:user,
+            isGroup:true,
+            group: { groupName: activeGroup.groupName },
+          }
+        })
+        })
+        
       }
     } else {
       toast.error("Please select a friend to start chatting.");
