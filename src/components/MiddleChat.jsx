@@ -3,11 +3,8 @@ import { useEffect } from "react";
 import "../styles/middleChat.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Form from "../components/Form";
 
 const MiddleChat = ({
-  activeMenu,
-  activeSettingsMenu,
   socket,
   setOnlineUsers,
   onlineUsers,
@@ -28,26 +25,6 @@ const MiddleChat = ({
   const [message, setMessage] = React.useState("");
   const [messageList, setMessageList] = React.useState([]);
   const [isOnline, setIsOnline] = React.useState(false);
-  const [formType, setFormType] = React.useState("credentials");
-  const [credentialsFormData, setCredentialsFormData] = React.useState({
-    name: "",
-    email: "",
-    username: "",
-    phone: "",
-    bio: "",
-  });
-  
-  const handleFormTypeChange = (type) => {
-    setFormType(type);
-  };
-
-  const handleCredentialsFormChange = (e) => {
-    setCredentialsFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleCredentialsSubmit = async (e) => {
-    e.preventDefault();
-  };
 
   const handleChangeMessage = (e) => {
     setMessage(e.target.value);
@@ -121,13 +98,7 @@ const MiddleChat = ({
     } else {
       toast.error("Please select a friend to start chatting.");
     }
-  }; 
-
-  useEffect(() => {
-    const element = document.getElementById("middlechat__anchor");
-    element.scrollIntoView();
-  }, [])
-  
+  };
 
   useEffect(() => {
     const receiveMessage = (data) => {
@@ -365,6 +336,7 @@ const MiddleChat = ({
   }, [onlineUsers]);
 
   return (
+<<<<<<< HEAD
     <>
     {activeMenu === "settings" ? (
       <>
@@ -394,6 +366,9 @@ const MiddleChat = ({
       </>
     ) : (
       <div className="middlechat__outer">
+=======
+    <div className="middlechat__outer">
+>>>>>>> parent of 71c5def (Merge branch 'main' into chat)
       <div className="middlechat__top">
         <div className="middlechat__top__left">
           <div className="middlechat__top__left__avatar"><span>{activeChat?.name[0] || activeGroup?.groupName[0]}</span></div>
@@ -418,32 +393,26 @@ const MiddleChat = ({
         <div className="middlechat__top__right">
           <button>
             <span className="callIcon material-symbols-outlined">call</span>
+            <span className="middlechat__top__right__span">Call</span>
           </button>
         </div>
       </div>
 
-
-
-      <div className="middlechat__middle" id="middlechat__scroller">
-        {messageList.map((message, idx) => (
-          <div
+      <div className="middlechat__middle">
+        {messageList?.map((message, idx) => (
+          <h3
             key={idx}
             className={
               message.id === user.userId
-                ? "middlechat__messageCard middlechat__you"
-                : "middlechat__messageCard middlechat__other" 
+                ? "middlechat__you"
+                : "middlechat__other"
             }
           >
-            <div className="middlechat__messageCard_message">
-              {message.message}
-            </div>
-            <div className="middlechat__messageCard_time">
-             {message.time}
-            </div> 
-          </div>
+            {message.message} {message.date} {message.time}
+          </h3>
         ))}
-        <div id="middlechat__anchor"></div>
       </div>
+
       <div className="middlechat__bottom">
         <span className="attachmentIcon material-symbols-outlined">
           attachment
@@ -468,11 +437,6 @@ const MiddleChat = ({
         </div>
       </div>
     </div>
-    )
-    }
-
-    
-    </>
   );
 };
 
