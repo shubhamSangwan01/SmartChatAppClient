@@ -37,6 +37,11 @@ const ChatMain = () => {
   const handleSearchFriends = (e) => {
     setSearchFriends(e.target.value);
   };
+  const handleLogOut = async()=>{
+    sessionStorage.clear();
+    toast.success("Logging out.")
+    setTimeout(()=>{navigate('/')},1500)
+  }
   const handleSearchChats = (e) => {
     setSearchChats(e.target.value);
   };
@@ -258,6 +263,7 @@ const ChatMain = () => {
                 })
           }
           handleOnClickNotification={handleOnClickNotification}
+          handleLogOut={handleLogOut}
           handleClearNotifications={handleClearNotifications}
           setActiveGroup={setActiveGroup}
           setActiveMenu={setActiveMenu}
