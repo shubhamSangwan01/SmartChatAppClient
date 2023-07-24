@@ -172,12 +172,15 @@ const ChatMain = () => {
         to: user,
       });
     }
-    // 
-    setNotifications(prevNoti=>prevNoti.filter(noti=>{
-      if(!unreadUsers.some(usr=>usr.userId===noti.notifySender.userId)){
-        return noti;
-      }
-    }))
+    //
+    if(notifications && notifications.length>0){
+      setNotifications(prevNoti=>prevNoti?.filter(noti=>{
+        if(!unreadUsers.some(usr=>usr.userId===noti.notifySender.userId)){
+          return noti;
+        }
+      }))
+    } 
+    
   };
 
   useEffect(() => {
