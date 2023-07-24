@@ -79,12 +79,12 @@ const ChatMain = () => {
       });
     }
     axios
-      .post("smartchatappserver-production.up.railway.app/removesinglenotification", {
+      .post("https://smartchatappserver-production.up.railway.app//removesinglenotification", {
         userId: user.userId,
         from: notification.notifySender,
       })
       .then((res) => console.log(res));
-     axios.post("smartchatappserver-production.up.railway.app/updateunreadusers", {
+     axios.post("https://smartchatappserver-production.up.railway.app//updateunreadusers", {
         from: notification.notifySender,
         to: user,
       }).then(res=>console.log(res))
@@ -92,7 +92,7 @@ const ChatMain = () => {
   const handleClearNotifications = (e) => {
     setNotifications([]);
     axios
-      .post("smartchatappserver-production.up.railway.app/clearnotification", { userId: user.userId })
+      .post("https://smartchatappserver-production.up.railway.app//clearnotification", { userId: user.userId })
       .then((res) => console.log(res));
   };
 
@@ -123,7 +123,7 @@ const ChatMain = () => {
         },
       ]);
 
-      const res = await axios.post("smartchatappserver-production.up.railway.app/creategroup", {
+      const res = await axios.post("https://smartchatappserver-production.up.railway.app//creategroup", {
         ...groupInfo,
         groupMembers: modifiedGroupMembers,
       });
@@ -133,7 +133,7 @@ const ChatMain = () => {
         }
       })
       offlineUsers.forEach(offlineUser=>{
-        axios.post('smartchatappserver-production.up.railway.app/savenotification',{
+        axios.post('https://smartchatappserver-production.up.railway.app//savenotification',{
         userId:offlineUser.userId,
         notification:{
           notifyMessage:`${user.name} added you to ${groupInfo.groupName}.`,
@@ -167,7 +167,7 @@ const ChatMain = () => {
       prev.filter((usr) => usr.userId !== rescentChatUser.userId)
     );
     if (unreadUsers?.some((usr) => usr.userId === rescentChatUser.userId)) {
-      await axios.post("smartchatappserver-production.up.railway.app/updateunreadusers", {
+      await axios.post("https://smartchatappserver-production.up.railway.app//updateunreadusers", {
         from: rescentChatUser,
         to: user,
       });
@@ -195,22 +195,22 @@ const ChatMain = () => {
       socket?.emit("new_user_add", user);
 
       axios
-        .post("smartchatappserver-production.up.railway.app/getrescentchats", { user })
+        .post("https://smartchatappserver-production.up.railway.app//getrescentchats", { user })
         .then((res) => {
           setRescentChats(res.data.rescentChats);
         });
 
       axios
-        .get(`smartchatappserver-production.up.railway.app/unreadusers/${user.userId}`)
+        .get(`https://smartchatappserver-production.up.railway.app//unreadusers/${user.userId}`)
         .then((res) => setUnreadUsers(res.data.unreadUsers));
 
       axios
-        .get(`smartchatappserver-production.up.railway.app/getgroups/${user.userId}`)
+        .get(`https://smartchatappserver-production.up.railway.app//getgroups/${user.userId}`)
         .then((res) => {
           setGroups(res.data.groups);
         });
       axios
-        .get(`smartchatappserver-production.up.railway.app/getnotification/${user.userId}`)
+        .get(`https://smartchatappserver-production.up.railway.app//getnotification/${user.userId}`)
         .then((res) => {
           setNotifications(res?.data?.notifications);
         });
@@ -220,7 +220,7 @@ const ChatMain = () => {
   useEffect(() => {
     if (searchFriends.includes("@gmail.com")) {
       axios
-        .post("smartchatappserver-production.up.railway.app/searchuser", { searchFriends })
+        .post("https://smartchatappserver-production.up.railway.app//searchuser", { searchFriends })
         .then((res) => {
           if (res.status === 202) {
             toast.error(res?.data.message);
