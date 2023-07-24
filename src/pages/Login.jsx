@@ -37,7 +37,7 @@ const Login = () => {
 
     if (loginFormData.email !== "" && loginFormData.password !== "") {
       const data = await axios.post(
-        "http://localhost:5000/login",
+        "smartchatappserver-production.up.railway.app/login",
         loginFormData
       );
       if (data.data.status === 200) {
@@ -68,7 +68,7 @@ const Login = () => {
       signupFormData.confirmPassword !== ""
     ) {
       const data = await axios.post(
-        "http://localhost:5000/signup",
+        "smartchatappserver-production.up.railway.app/signup",
         signupFormData
       );
       if (data.data.status == 200) {

@@ -84,7 +84,7 @@ const MiddleChat = ({
         });
 
         if (!onlineUsers.some((usr) => usr.userId === activeChat?.userId)) {
-          axios.post("http://localhost:5000/savenotification", {
+          axios.post("smartchatappserver-production.up.railway.app/savenotification", {
             userId: activeChat?.userId,
             notification: {
               notifyMessage: `${user.name} send you a message.`,
@@ -95,7 +95,7 @@ const MiddleChat = ({
           });
         }
 
-        const data = await axios.post("http://localhost:5000/savemessage", {
+        const data = await axios.post("smartchatappserver-production.up.railway.app/savemessage", {
           from: user,
           to: activeChat,
           message,
@@ -111,7 +111,7 @@ const MiddleChat = ({
 
         if (!onlineUsers?.some((usr) => usr.userId === activeChat?.userId)) {
           //? add yourself in activechat user's unread chats
-          await axios.post("http://localhost:5000/unreaduser", {
+          await axios.post("smartchatappserver-production.up.railway.app/unreaduser", {
             from: user,
             to: activeChat,
           });
@@ -140,7 +140,7 @@ const MiddleChat = ({
         });
 
         setMessage("");
-        await axios.post("http://localhost:5000/savegroupmessage", {
+        await axios.post("smartchatappserver-production.up.railway.app/savegroupmessage", {
           message,
           from: user,
           groupId: activeGroup?.groupId,
@@ -152,7 +152,7 @@ const MiddleChat = ({
           }
         });
         offlineUsers.forEach((offlineUser) => {
-          axios.post("http://localhost:5000/savenotification", {
+          axios.post("smartchatappserver-production.up.railway.app/savenotification", {
             userId: offlineUser.userId,
             notification: {
               notifyMessage: `${user?.name} send a message in ${activeGroup?.groupName}.`,
@@ -182,7 +182,7 @@ const MiddleChat = ({
       ) {
         setUnreadUsers((prev) => [...prev, { userId: data.from.userId }]);
         axios
-          .post("http://localhost:5000/unreaduser", {
+          .post("smartchatappserver-production.up.railway.app/unreaduser", {
             from: data.from,
             to: user,
           })
@@ -224,7 +224,7 @@ const MiddleChat = ({
           }
         });
         axios
-          .post("http://localhost:5000/savenotification", {
+          .post("smartchatappserver-production.up.railway.app/savenotification", {
             // my notification
             userId: user.userId,
             notification: {
@@ -270,7 +270,7 @@ const MiddleChat = ({
           group: { groupName: data.groupName, groupId: data.groupId },
         },
       ]);
-      axios.post("http://localhost:5000/savenotification", {
+      axios.post("smartchatappserver-production.up.railway.app/savenotification", {
         userId: user.userId,
         notification: {
           notifyMessage: `${data.from.name} added you to ${data.groupName} group.`,
@@ -292,7 +292,7 @@ const MiddleChat = ({
             group: { groupId: data.groupId, groupName: data.groupName },
           },
         ]);
-        axios.post("http://localhost:5000/savenotification", {
+        axios.post("smartchatappserver-production.up.railway.app/savenotification", {
           userId: user.userId,
           notification: {
             notifyMessage: `${data.from.name} send a message in ${data.groupName}.`,
@@ -337,7 +337,7 @@ const MiddleChat = ({
     // fetch chats of active chat
     if (activeChat !== null) {
       axios
-        .post("http://localhost:5000/messages", {
+        .post("smartchatappserver-production.up.railway.app/messages", {
           from: user?.userId,
           to: activeChat?.userId,
         })
@@ -375,7 +375,7 @@ const MiddleChat = ({
     if (activeGroup !== null) {
       socket?.emit("join_group", { activeGroup, user });
       axios
-        .get(`http://localhost:5000/getgroupmessages/${activeGroup?.groupId}`)
+        .get(`smartchatappserver-production.up.railway.app/getgroupmessages/${activeGroup?.groupId}`)
         .then((res) => {
           const msgList = res?.data?.groupChats?.map((msg) => {
             const msgDate = `${new Date(msg.date).getDate()}/${new Date(
