@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import "../styles/Main.css";
 import Navbar from "../components/Navbar";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 
 const Main = () => {
+  const navigate = useNavigate()
   useEffect(() => {
     let IntroMain_text_h1 = document.getElementById("IntroMain_text_h1");
     let IntroMain_text_p = document.getElementById("IntroMain_text_p");
@@ -58,7 +60,7 @@ const Main = () => {
       <Navbar />
       <section className="IntroMain" id="IntroMain">
         <div className="IntroMain_text">
-          <h1 id="IntroMain_text_h1">
+          <h1  id="IntroMain_text_h1">
             Start chatting with <br />
             customers , anywhere <br />
             anytime with application
@@ -67,13 +69,14 @@ const Main = () => {
             Great software that allows you to chat from any <br />
             place at any time without any interruption.
           </p>
-          <a
+          <Link
+          to={'/login'}
             id="IntroMain_text_button"
             className="IntroMain_text_button"
-            href="#"
+            
           >
             <p>Start chatting now!</p>
-          </a>
+          </Link>
           <div
             id="IntroMain_text_userStats"
             className="IntroMain_text_userStats"
