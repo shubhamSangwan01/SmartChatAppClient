@@ -153,7 +153,7 @@ const LeftChat = ({
                     onClick={() => {
                       setActiveGroup(group);
                       if(notifications && notifications.length>0){
-                       setNotifications(prevNoti=>prevNoti?.filter(noti=> noti.isGroup==true &&noti.group.groupId!==group.groupId)) 
+                       setNotifications(prevNoti=>prevNoti?.filter(noti=> noti.isGroup==true &&noti.group.groupName!==group.groupName)) 
                       }
                       setActiveChat(null);
                     }}
