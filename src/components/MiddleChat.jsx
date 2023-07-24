@@ -76,6 +76,7 @@ const MiddleChat = ({
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
           },
         ]);
+        setMessage("");
         setToggleEmojiPicker(false);
         await socket?.emit("send_message", {
           ...activeChat,
@@ -101,7 +102,7 @@ const MiddleChat = ({
           message,
         });
 
-        setMessage("");
+        
         if (!rescentChats.some((chat) => chat.userId === activeChat.userId)) {
           setRescentChats((prev) => [
             ...prev,
@@ -127,6 +128,7 @@ const MiddleChat = ({
             time: `${new Date().getHours()}:${new Date().getMinutes()}`,
           },
         ]);
+        setMessage("");
         setToggleEmojiPicker(false)
         await socket?.emit("send_group_message", {
           message,
@@ -139,7 +141,7 @@ const MiddleChat = ({
           message,
         });
 
-        setMessage("");
+        
         await axios.post("https://smartchatappserver-production.up.railway.app/savegroupmessage", {
           message,
           from: user,
