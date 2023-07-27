@@ -19,6 +19,7 @@ const LeftChat = ({
   setSearchFriends,
   unreadUsers,
   createGroup,
+  handleLogOut,
   setCreateGroup,
   groupInfo,
   setSearchFriendsResult,
@@ -515,12 +516,12 @@ const LeftChat = ({
                 <span className="Settings__categories__heading">Actions</span>
                 <div className="Settings__subCategories__container">
                   <div className={activeSettingsMenu==='report'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('report')}}>
-                    <span class="material-symbols-outlined Settings__subCategories__image">flag</span>
+                    <span className="material-symbols-outlined Settings__subCategories__image">flag</span>
                     <span className="Settings__subCategories__text">Report a problem</span>
                   </div>
-                  <div className={activeSettingsMenu==='log_out'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('log_out')}}>
-                    <span class="material-symbols-outlined Settings__subCategories__image">logout</span>
-                    <span className="Settings__subCategories__text">Log out</span>
+                  <div  className={activeSettingsMenu==='log_out'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('log_out')}}>
+                    <span onClick={handleLogOut} className="material-symbols-outlined Settings__subCategories__image">logout</span>
+                    <span onClick={handleLogOut}  className="Settings__subCategories__text">Log out</span>
                   </div>
                 </div>
               </div>

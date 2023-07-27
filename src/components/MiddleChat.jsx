@@ -423,7 +423,7 @@ const MiddleChat = ({
               />
             </>
           )}
-          {activeSettingsMenu !== "profile" && (
+          {activeSettingsMenu !== "profile" && activeSettingsMenu!== "log_out" && (
             <>
               <div className="Settings_outer">
                 <div className="Settings_inner">
