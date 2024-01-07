@@ -56,7 +56,16 @@ const Login = () => {
       }
     }
   };
+  function ValidateEmail(input) {
+    var validRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
+    if (input.match(validRegex)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
     if (signupFormData.password !== signupFormData.confirmPassword) {
@@ -89,14 +98,20 @@ const Login = () => {
   return (
     <div className="login__outer">
       <Navbar handleFormTypeChange={handleFormTypeChange} />
-      <section>
+      {/** responsive grid section using tailwind */}
+      <section className="container grid lg:grid-cols-3 md:grid-cols-1 justify-center items-center ">
         <div className="loginSection_text">
           <div className="loginSection_textBackground1"></div>
           <div className="loginSection_textBackground2"></div>
           <h1>
-            Sign In <br />
+            {/** span styling done using tailwind */}
+            <span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-pink-500 relative inline-block">
+              <span class="relative text-white">Sign In</span>
+            </span>{" "}
+            <br />
             to Enjoy!
           </h1>
+
           <p>
             If you don't have an account <br />
             you can Register here!
@@ -107,6 +122,7 @@ const Login = () => {
         </div>
         <div>
           <Form
+            validateEmail={ValidateEmail}
             formType={formType}
             setFormType={setFormType}
             loginFormData={loginFormData}

@@ -11,6 +11,7 @@ const Form = ({
   credentialsFormData,
   handleCredentialsFormChange,
   handleLoginSubmit,
+  validateEmail,
   handleSignupSubmit,
   handleCredentialsSubmit
 }) => {
@@ -28,8 +29,10 @@ const Form = ({
           >
             <ul className="loginForm__list">
               <li className="loginForm__input">
+                {/** email input styled with invalid email using tailwind css */}
                 <input
                   type="email"
+                  className={validateEmail(loginFormData.email)?'':'invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500'}
                   name="email"
                   value={loginFormData.email}
                   onChange={handleLoginFormChange}
@@ -97,6 +100,7 @@ const Form = ({
               <li className="loginForm__input">
                 <input
                   type="email"
+                  className={validateEmail(loginFormData.email)?'':'invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500'}
                   name="email"
                   value={signupFormData.email}
                   onChange={handleSignupFormChange}
@@ -166,7 +170,7 @@ const Form = ({
         </div>
       )}
       {formType == "credentials" && (
-        <form className="CredentialsForm"
+        <form className="CredentialsForm col-span-2"
           onSubmit={handleCredentialsSubmit}
         >
           <div className="profile_options_outer">

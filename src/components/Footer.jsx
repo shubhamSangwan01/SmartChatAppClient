@@ -6,12 +6,7 @@ const Footer = () => {
     <div className='Footer__outer' id='Footer__outer'>
         <div className='Footer__top'>
             <div className='Footer__left'>
-                <ul className='Footer__list'>
-            <a href="#IntroMain">Home</a>
-            <a href="#Intro_features">Features</a>
-            <a href="">About Us</a>
-            <a href="#Footer__outer">Contact</a>
-          </ul>
+              
         </div>
             <div className='Footer__right'>
                 <ul className='Footer__list'>

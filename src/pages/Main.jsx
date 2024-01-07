@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 
 const Main = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     let IntroMain_text_h1 = document.getElementById("IntroMain_text_h1");
     let IntroMain_text_p = document.getElementById("IntroMain_text_p");
@@ -58,10 +58,18 @@ const Main = () => {
   return (
     <div className="main_page">
       <Navbar />
-      <section className="IntroMain" id="IntroMain">
+      {/** section grid using tailwind css  with responsive over different screen sizes*/}
+      <section
+        className="IntroMain grid lg:grid-cols-2 md:grid-cols-1"
+        id="IntroMain"
+      >
         <div className="IntroMain_text">
-          <h1  id="IntroMain_text_h1">
-            Start chatting with <br />
+          <h1 id="IntroMain_text_h1">
+            {/** Span styling using tailwind css */}
+            <span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-pink-500 relative inline-block">
+              <span class="relative text-white">Start Chatting</span>
+            </span>{" "}
+            with <br />
             customers , anywhere <br />
             anytime with application
           </h1>
@@ -70,10 +78,9 @@ const Main = () => {
             place at any time without any interruption.
           </p>
           <Link
-          to={'/login'}
+            to={"/login"}
             id="IntroMain_text_button"
-            className="IntroMain_text_button"
-            
+            className="IntroMain_text_button bg-sky-500 hover:bg-sky-700"
           >
             <p>Start chatting now!</p>
           </Link>
@@ -103,7 +110,8 @@ const Main = () => {
         <div className="Intro_features_hearder">
           <span>Feature for better experience</span>
         </div>
-        <div className="Intro_features_details">
+        {/** features grid added using tailwind css with responsive over different screen sizes */}
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
           <div id="Intro_features_card" className="Intro_features_card">
             <div className="Intro_features_cardHeader">
               <span className="material-symbols-outlined">videocam</span>
@@ -136,7 +144,10 @@ const Main = () => {
           </div>
         </div>
       </section>
-      <section className="Intro_uniqueFeatures" id="Intro_uniqueFeatures">
+      <section
+        className="Intro_uniqueFeatures grid lg:grid-cols-2 md:grid-cols-1"
+        id="Intro_uniqueFeatures"
+      >
         <div>
           <div className="Intro_uniqueFeatures_card">
             <div

@@ -7,7 +7,7 @@
 
 .middlechat__top {
   display: flex;
-  height: 3rem;
+  height: fit-content;
   padding: 15px 30px 10px 30px;
   align-items: center;
   justify-content: space-between;
@@ -67,6 +67,7 @@
 .middlechat__top__right > button {
   display: flex;
   align-items: center;
+  cursor: pointer;
   padding: 12px 12px;
   border-radius: 10px;
   border: none;

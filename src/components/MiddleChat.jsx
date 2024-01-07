@@ -17,6 +17,7 @@ const MiddleChat = ({
   user,
   activeChat,
   unreadUsers,
+  callUser,
   setUnreadUsers,
   notifications,
   activeGroup,
@@ -423,7 +424,7 @@ const MiddleChat = ({
           )}
           {activeSettingsMenu !== "profile" && activeSettingsMenu!== "log_out" && (
             <>
-              <div className="Settings_outer">
+              <div className="Settings_outer col-span-2">
                 <div className="Settings_inner">
                   <span>This feature is coming soon!</span>
                 </div>
@@ -432,8 +433,8 @@ const MiddleChat = ({
           )}
         </>
       ) : (
-        <div className="middlechat__outer">
-          <div className="middlechat__top">
+        <div className="middlechat__outer col-span-2">
+          <div className="middlechat__top py-4 px-4">
             <div className="middlechat__top__left">
               <div className="middlechat__top__left__avatar">
                 <span>{activeChat?.name[0] || activeGroup?.groupName[0]}</span>
@@ -456,7 +457,7 @@ const MiddleChat = ({
               </div>
             </div>
             <div className="middlechat__top__right">
-              <button>
+              <button onClick={callUser}>
                 <span className="callIcon material-symbols-outlined">call</span>
               </button>
             </div>

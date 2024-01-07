@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Sidebar from "../components/Sidebar";
 import LeftChat from "../components/LeftChat";
 import MiddleChat from "../components/MiddleChat";
 import RightChat from "../components/RightChat";
 import io from "socket.io-client";
 import "../styles/chatmain.css";
+import Peer from "simple-peer";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,9 +15,16 @@ const ChatMain = () => {
   const [user, setUser] = React.useState(null);
   const [unreadUsers, setUnreadUsers] = React.useState([]);
   const [onlineUsers, setOnlineUsers] = React.useState(null);
+
+  const [isCall, setIsCall] = React.useState(false);
+  const [call, setCall] = React.useState(null);
+  const [stream, setStream] = React.useState(null);
+  const [callAccepted, setCallAccepted] = React.useState(false);
+  const [callEnded, setCallEnded] = React.useState(false);
+
   const [activeChat, setActiveChat] = React.useState(null);
   const [activeMenu, setActiveMenu] = React.useState("messages");
-  const [activeSettingsMenu,setActiveSettingsMenu] = React.useState('profile');
+  const [activeSettingsMenu, setActiveSettingsMenu] = React.useState("profile");
   const [searchFriends, setSearchFriends] = React.useState("");
   const [searchGroups, setSearchGroups] = React.useState("");
   const [notifications, setNotifications] = React.useState([]);
@@ -33,20 +41,27 @@ const ChatMain = () => {
   });
 
   const navigate = useNavigate();
+  const myVideo = useRef();
+  const userVideo = useRef();
+  const connectionRef = useRef();
 
   const handleSearchFriends = (e) => {
     setSearchFriends(e.target.value);
   };
-  const handleLogOut = async()=>{
+  const handleLogOut = async () => {
     sessionStorage.clear();
-    toast.success("Logging out.")
-    setTimeout(()=>{navigate('/')},1500)
-  }
+    toast.success("Logging out.");
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
+  };
   const handleSearchChats = (e) => {
     setSearchChats(e.target.value);
   };
   const handleOnClickNotification = (notification) => {
-    setUnreadUsers(prev=>prev.filter(usr=>usr.userId!==notification.notifySender.userId));
+    setUnreadUsers((prev) =>
+      prev.filter((usr) => usr.userId !== notification.notifySender.userId)
+    );
 
     const isGroup = notification?.isGroup;
     if (!isGroup) {
@@ -89,10 +104,12 @@ const ChatMain = () => {
         from: notification.notifySender,
       })
       .then((res) => console.log(res));
-     axios.post("http://localhost:5000/updateunreadusers", {
+    axios
+      .post("http://localhost:5000/updateunreadusers", {
         from: notification.notifySender,
         to: user,
-      }).then(res=>console.log(res))
+      })
+      .then((res) => console.log(res));
   };
   const handleClearNotifications = (e) => {
     setNotifications([]);
@@ -132,23 +149,23 @@ const ChatMain = () => {
         ...groupInfo,
         groupMembers: modifiedGroupMembers,
       });
-      const offlineUsers = groupInfo.groupMembers.filter(mem=>{
-        if(!onlineUsers?.some(usr=>usr.userId===mem.userId)){
+      const offlineUsers = groupInfo.groupMembers.filter((mem) => {
+        if (!onlineUsers?.some((usr) => usr.userId === mem.userId)) {
           return mem;
         }
-      })
-      offlineUsers.forEach(offlineUser=>{
-        axios.post('http://localhost:5000/savenotification',{
-        userId:offlineUser.userId,
-        notification:{
-          notifyMessage:`${user.name} added you to ${groupInfo.groupName}.`,
-          notifyData:"Group added",
-          notifySender:user,
-          isGroup:true,
-          group: { groupName: groupInfo.groupName },
-        }
-      })
-      })
+      });
+      offlineUsers.forEach((offlineUser) => {
+        axios.post("http://localhost:5000/savenotification", {
+          userId: offlineUser.userId,
+          notification: {
+            notifyMessage: `${user.name} added you to ${groupInfo.groupName}.`,
+            notifyData: "Group added",
+            notifySender: user,
+            isGroup: true,
+            group: { groupName: groupInfo.groupName },
+          },
+        });
+      });
 
       if (res.status === 200) {
         toast.success(`Group ${groupInfo?.groupName} created successfully.`);
@@ -177,12 +194,104 @@ const ChatMain = () => {
         to: user,
       });
     }
-    // 
-    setNotifications(prevNoti=>prevNoti.filter(noti=>{
-      if(!unreadUsers.some(usr=>usr.userId===noti.notifySender.userId)){
-        return noti;
-      }
-    }))
+    //
+    setNotifications((prevNoti) =>
+      prevNoti.filter((noti) => {
+        if (
+          !unreadUsers.some((usr) => usr.userId === noti.notifySender.userId)
+        ) {
+          return noti;
+        }
+      })
+    );
+  };
+  const callUser = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream)
+        console.log(currentStream)
+        if (myVideo.current) {
+          
+          myVideo.current.srcObject = currentStream;
+        }
+        socket.on("callUser", ({ from, name: callerName, signal }) => {
+          console.log("Call received", from);
+          setCall({ isReceivingCall: true, from, name: callerName, signal });
+        })
+      }).catch(error=>{
+        console.log(error)
+      })
+
+    setIsCall(true);
+    const peer = new Peer({ initiator: true, trickle: false, stream });
+
+    peer.on("signal", (data) => {
+      socket.emit("callUser", {
+        userToCall: activeChat?.userId,
+        signalData: data,
+        from: user,
+        name: user?.name,
+        isMuted:false
+      });
+    });
+
+    peer.on("stream", (currentStream) => {
+      userVideo.current.srcObject = currentStream;
+    });
+
+    socket.on("callAccepted", (signal) => {
+      setCallAccepted(true);
+     
+      peer.signal(signal);
+    });
+
+    connectionRef.current = peer;
+  };
+
+  const leaveCall = () => {
+    if (connectionRef.current) {
+      connectionRef.current.destroy();
+    }
+    socket?.emit("leave_call",{})
+    // Reset call-related states
+    setCall(null);
+    setCallAccepted(false);
+    setCallEnded(true);
+  };
+  const answerCall = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream)
+        console.log(currentStream)
+        if (myVideo.current) {
+          
+          myVideo.current.srcObject = currentStream;
+        }
+        socket.on("callUser", ({ from, name: callerName, signal }) => {
+          
+          setCall({ isReceivingCall: true, from, name: callerName, signal });
+        })
+      }).catch(error=>{
+        console.log(error)
+      })
+
+    setCallAccepted(true);
+    setIsCall(true)
+    const peer = new Peer({ initiator: false, trickle: false, stream });
+
+    peer.on("signal", (data) => {
+      socket.emit("answerCall", { signal: data, to: call.from });
+    });
+
+    peer.on("stream", (currentStream) => {
+      userVideo.current.srcObject = currentStream;
+    });
+
+    peer.signal(call.signal);
+
+    connectionRef.current = peer;
   };
 
   useEffect(() => {
@@ -198,7 +307,7 @@ const ChatMain = () => {
       }, 1500);
     } else {
       socket?.emit("new_user_add", user);
-
+      
       axios
         .post("http://localhost:5000/getrescentchats", { user })
         .then((res) => {
@@ -220,7 +329,49 @@ const ChatMain = () => {
           setNotifications(res?.data?.notifications);
         });
     }
+    socket?.on("call_left", () => {
+      if (connectionRef.current) {
+        connectionRef.current.destroy();
+      }
+     
+      // Reset call-related states
+      setCall(null);
+      setCallAccepted(false);
+      setCallEnded(true);
+    });
+  
+    // ... (rest of the code)
+  
+    // Clean up the socket listener when the component unmounts
+    return () => {
+      socket?.off("call_left");
+    };
   }, []);
+  
+
+ 
+
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream)
+        console.log(currentStream)
+        if (myVideo.current) {
+          
+          myVideo.current.srcObject = currentStream;
+        }
+        socket.on("callUser", ({ from, name: callerName, signal }) => {
+          console.log("Call received", from);
+          setCall({ isReceivingCall: true, from, name: callerName, signal });
+        })
+      }).catch(error=>{
+        console.log(error)
+      })
+
+    
+  }, []);
+  console.log(stream)
 
   useEffect(() => {
     if (searchFriends.includes("@gmail.com")) {
@@ -243,13 +394,14 @@ const ChatMain = () => {
     <div className="chat__outer">
       <Sidebar
         user={user}
-          activeSettingsMenu={activeSettingsMenu}
-          setActiveSettingsMenu={setActiveSettingsMenu}
+        activeSettingsMenu={activeSettingsMenu}
+        setActiveSettingsMenu={setActiveSettingsMenu}
         activeMenu={activeMenu}
         setActiveMenu={setActiveMenu}
         notifications={notifications}
-      />
-      <div className="chat__main__grid">
+      /> 
+      {/** chat page grid added tailwind csss */}
+      <div className="chat__main__grid grid grid-cols-4">
         <LeftChat
           rescentChats={
             searchChats === ""
@@ -292,26 +444,53 @@ const ChatMain = () => {
           handleSearchFriends={handleSearchFriends}
           searchFriendsResult={searchFriendsResult}
         />
-        <MiddleChat
-          activeMenu={activeMenu}
-          activeSettingsMenu={activeSettingsMenu}
-          setActiveSettingsMenu={setActiveSettingsMenu}
-          setOnlineUsers={setOnlineUsers}
-          notifications={notifications}
-          setNotifications={setNotifications}
-          activeGroup={activeGroup}
-          setGroups={setGroups}
-          groups={groups}
-          unreadUsers={unreadUsers}
-          setUnreadUsers={setUnreadUsers}
-          onlineUsers={onlineUsers}
-          rescentChats={rescentChats}
-          setRescentChats={setRescentChats}
-          socket={socket}
-          user={user}
-          activeChat={activeChat}
+        {isCall ? (
+          <div className="continer">
+            <div className="my_video">
+             { <video
+                playsInline
+                muted={true}
+                ref={myVideo}
+                autoPlay
+                style={{ width: "300px" }}
+              />}
+             {callAccepted && !callEnded && <video
+                playsInline
+                ref={userVideo}
+                autoPlay
+                style={{ width: "300px" }}
+              />}
+            </div>
+          </div>
+        ) : (
+          <MiddleChat
+            activeMenu={activeMenu}
+            callUser={callUser}
+            activeSettingsMenu={activeSettingsMenu}
+            setActiveSettingsMenu={setActiveSettingsMenu}
+            setOnlineUsers={setOnlineUsers}
+            notifications={notifications}
+            setNotifications={setNotifications}
+            activeGroup={activeGroup}
+            setGroups={setGroups}
+            groups={groups}
+            unreadUsers={unreadUsers}
+            setUnreadUsers={setUnreadUsers}
+            onlineUsers={onlineUsers}
+            rescentChats={rescentChats}
+            setRescentChats={setRescentChats}
+            socket={socket}
+            user={user}
+            activeChat={activeChat}
+          />
+        )}
+        <RightChat
+           callAccepted={callAccepted}
+          
+           call={call}
+           leaveCall={leaveCall}
+           answerCall={answerCall}
         />
-        <RightChat />
       </div>
     </div>
   );

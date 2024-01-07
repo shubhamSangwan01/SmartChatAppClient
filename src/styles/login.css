@@ -1,3 +1,4 @@
+
 .login__outer{
     min-height: 100%;
     background:#F5F5F5;
@@ -6,8 +7,7 @@
 section{
     margin-left: 3rem;
     padding: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    
 }
 
 .loginSection_image{

@@ -64,7 +64,8 @@ const LeftChat = ({
           </div>
 
           <div className="leftchat__bottom">
-            <ul className="leftchat__list searchBar">
+            {/** list styling using tailwind css for odd and even children */}
+            <ul className="leftchat__list searchBar odd:bg-white even:bg-slate-50">
               <li className="leftchat__searchbar">
                 <span className="material-symbols-outlined leftchat__icon">
                   search
@@ -78,13 +79,23 @@ const LeftChat = ({
               </li>
             </ul>
             <ul className="leftchat__list bottomList">
+              {/* <table>
+                <tbody>
+                  <tr>
+                    <td>
+                    
+                    </td>
+                  </tr>
+                </tbody>
+              </table> */}
               {rescentChats.map((chat, idx) => (
+                
                 <li
                   key={idx}
                   onClick={() => {
                     handleChangeActiveChat(chat);
                   }}
-                  className="leftchat__chat"
+                  className="leftchat__chat odd:bg-white even:bg-slate-50 rounded"
                 >
                   <div className="leftchat__chatcard">
                     <div className="leftchat__chatcard__left">
@@ -155,7 +166,7 @@ const LeftChat = ({
                       setActiveGroup(group);
                       setActiveChat(null);
                     }}
-                    className="leftchat__chat"
+                    className="leftchat__chat odd:bg-white even:bg-slate-50 rounded"
                   >
                     <div className="leftchat__chatcard">
                       <div className="leftchat__chatcard__left">
@@ -476,7 +487,7 @@ const LeftChat = ({
           <div className="leftchat__bottom">
             <div className="Settings__categories__container">
               <div className="Settings__categories">
-                <span className="Settings__categories__heading">Account</span>
+                <span className="Settings__categories__heading ">Account</span>
                 <div className="Settings__subCategories__container">
                   <div className={activeSettingsMenu==='profile'?"Settings__subCategories active":"Settings__subCategories"} onClick={()=>{setActiveSettingsMenu('profile')}}>
                     <span class="material-symbols-outlined Settings__subCategories__image">person</span>

@@ -12,8 +12,7 @@
 }
 
 .IntroMain{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+   
     margin: 0;
     background-image: linear-gradient(#00c1ff, transparent,transparent);
 }
@@ -60,6 +59,7 @@
 /* Image div */
 .IntroMain_image{
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
 }
@@ -90,8 +90,7 @@
 }
 
 .Intro_features_details{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    
 }
 
 .Intro_features_card{
@@ -161,6 +160,7 @@
 
 .Intro_uniqueFeatures_card_image img{
     height: 350px;
+    width: 350px;
 }
 
 .Intro_uniqueFeatures_card_text{

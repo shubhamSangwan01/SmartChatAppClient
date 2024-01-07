@@ -29,11 +29,7 @@
   align-items: center;
 }
 
-.Navbar__list > a:hover {
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-  background-color: white;
-  color: #44a9f2;
-}
+
 
 .Navbar__list .Navbar_button {
   margin-left: 20px;

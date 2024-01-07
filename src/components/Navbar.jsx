@@ -24,22 +24,25 @@ const Navbar = ({ handleFormTypeChange }) => {
         <ul className="Navbar__list">
           {isLoginPage && isLoginPage ? (
             <>
+            {/** tailwind css- button styling done and hover styling done */}
               <a
-                className="Navbar_button"
+                className="bg-sky-500 hover:bg-sky-700" 
                 onClick={() => handleFormTypeChange("login")}
               >
                 Sign In
               </a>
+              {/** tailwind css- button styling done and hover styling done */}
               <a
-                className="Navbar_button"
+                className="bg-sky-500 hover:bg-sky-700" 
                 onClick={() => handleFormTypeChange("register")}
               >
                 Register
               </a>
             </>
           ) : (
-            <Link id="login-signup-button" to="/login">
-              <a id="login-signup-button" className="Navbar_button">
+            <Link id="" to="/login">
+              {/** tailwind css- button styling done and hover styling done */}
+              <a id="" className="bg-sky-500 hover:bg-sky-700" > 
                 Login/Signup
               </a>
             </Link>
